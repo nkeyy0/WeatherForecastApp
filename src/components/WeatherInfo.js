@@ -1,17 +1,19 @@
 import React from 'react';
+import convertToCelsius from '../convert/convertToСelsius';
 
 class WeatherInfo extends React.Component {
-    render() {
-    return(
-        <div>
-        <h2>Weather forecast in {this.props.enterCity}:</h2>
-        <p>Temperature:</p>
-        <p>Atmosphere pressure:</p>
-        <p>Wind:</p>
-        <p>Air humidity:</p>
-        <p>Cloudiness:</p>
-        </div>
-        )}
+    render(){
+        const {city, temperature} = this.props;
+        return(
+            <div>
+                <h2>Weather for: {city}</h2>
+                <p></p>
+                <p>Temperature:{(temperature)&&convertToCelsius(temperature)}&#8451;</p>
+                <p>Pressure: </p>
+                <p>Wind:</p>
+            </div>
+        );
+    }
 }
 
 export default WeatherInfo;

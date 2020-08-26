@@ -1,16 +1,13 @@
 import React from 'react';
-import CitiesList from './CitiesList';
-
-
-const cities = ['Vitebsk', 'Minsk', 'New York'];
-
-
+import CitySearch from '../containers/CitySearch'
+import WeatherInfoDisplay from '../containers/WeatherInfoDisplay';
 class App extends React.Component {
     render(){
         return (
             <div>
             <h1>Weather</h1>
-            <CitiesList cities = {cities}/>
+            <CitySearch/>
+            <WeatherInfoDisplay/>
             </div>
         );
     }

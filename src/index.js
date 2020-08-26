@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
 import App from './components/App';
+import rootReducer from './reducers/index';
+import thunk from 'redux-thunk';
 
-const cities = ['Vitebsk', 'Minsk', 'New York'];
-// const store;
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
 ReactDOM.render(
-    <App cities = {cities}/> ,
+<Provider store = {store}>
+    <App/>
+</Provider>,
 document.getElementById('root'));
