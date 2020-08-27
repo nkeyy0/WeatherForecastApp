@@ -17,7 +17,9 @@ const initialState = {
         visibility: undefined,
         name: undefined,
         sys: {
-            country: undefined
+            country: undefined,
+            sunrise: undefined,
+            sunset: undefined
         }
     },
     dataCompare : {}

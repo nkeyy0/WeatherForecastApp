@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 
 
+
 class CitySearchField extends React.Component {
     render(){
         const {cityChanged, data, onChange, onSubmit, onClick} = this.props

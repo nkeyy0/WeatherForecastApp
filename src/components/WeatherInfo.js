@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Typography } from '@material-ui/core';
 import { CircularProgress } from '@material-ui/core';
+import getSunrise from '../convert/getSunrise';
 
 class WeatherInfo extends React.Component {
     render(){
@@ -47,6 +48,16 @@ class WeatherInfo extends React.Component {
                 {(data.main.pressure) ?
                  <Typography variant = "body1">
                     Pressure: {data.main.pressure} hPa
+                 </Typography>
+                  : null}
+                  {(data.sys.sunrise) ?
+                 <Typography variant = "body1">
+                 Sunrise : {getSunrise(data.sys.sunrise)} 
+                 </Typography>
+                  : null}
+                  {(data.sys.sunset) ?
+                 <Typography variant = "body1">
+                 Sunset : {getSunrise(data.sys.sunset)} 
                  </Typography>
                   : null}
             </Box>
