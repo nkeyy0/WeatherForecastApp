@@ -3,11 +3,21 @@ const initialState = {
     cityChanged: '',
     temperature: '',
     pressure: '',
+    descriptionWeather: '',
     data : {
         main: {
-            temperature : undefined
-        }
-    }
+            temperature : undefined,
+            humidity: undefined,
+            pressure: undefined
+        },
+        weather: [{description: undefined}],
+        wind : {
+            speed: undefined
+        },
+        visibility: undefined,
+        name: undefined
+    },
+    
 };
 
 const rootReducer = (state = initialState, action) => {

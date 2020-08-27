@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@material-ui/core';
 
 
 class CitySearchField extends React.Component {
@@ -16,7 +17,7 @@ class CitySearchField extends React.Component {
                         onChange = {(e) =>{
                             onChange (e.target.value)}}
                         />
-                <button onClick = {()=> onClick(cityChanged, data)}>Search</button>
+                <Button onClick = {()=> onClick(cityChanged, data)}>Search</Button>
             </form>
         )
     }

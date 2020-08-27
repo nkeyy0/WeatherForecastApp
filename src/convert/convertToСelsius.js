@@ -1,1 +1,1 @@
-export default (temperature) => temperature - 273.15;
+export default (temperature) => Math.round(temperature - 273.15);
