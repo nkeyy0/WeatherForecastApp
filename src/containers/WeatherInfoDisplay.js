@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
     return {
         city : state.city,
-        data : state.data
+        data : state.data,
+        
     }
 };
 

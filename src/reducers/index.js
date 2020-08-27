@@ -15,8 +15,12 @@ const initialState = {
             speed: undefined
         },
         visibility: undefined,
-        name: undefined
+        name: undefined,
+        sys: {
+            country: undefined
+        }
     },
+    dataCompare : {}
     
 };
 

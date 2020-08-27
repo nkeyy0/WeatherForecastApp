@@ -28,6 +28,7 @@ export const getData = (dataFromAPI) => {
     }
 }
 
+
 const API_KEY = '468b49f7d4966997c9d210546288fd30';
 export const loadData = (city) =>  async dispatch => {
         fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}`)

@@ -5,6 +5,7 @@ import { searchCity } from '../actions/index';
 import { changeInputSearch } from '../actions/index';
 import { loadData } from '../actions/index';
 
+
 const mapStateToProps = (state) => {
     return {
         city : state.city,
