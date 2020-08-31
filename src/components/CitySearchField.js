@@ -24,7 +24,7 @@ class CitySearchField extends React.Component {
                 <Button
                 size = "large"
                 startIcon = {<SearchIcon></SearchIcon>} 
-                onClick = {()=> onClick(cityChanged, data)}>Search</Button>
+                onClick = {onClick.bind(this, cityChanged, data)}>Search</Button>
             </form>
         )
     }

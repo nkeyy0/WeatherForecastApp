@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
     return {
         city : state.city,
         cityChanged: state.cityChanged,
-        data: state.data
+        data: state.data,
+        downloadError: state.downloadError
     }
 };
 

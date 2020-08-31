@@ -6,24 +6,25 @@ const initialState = {
     descriptionWeather: '',
     data : {
         main: {
-            temperature : undefined,
-            humidity: undefined,
-            pressure: undefined
+            temperature : null,
+            humidity: null,
+            pressure: null
         },
-        weather: [{description: undefined}],
+        weather: [{description: null}],
         wind : {
-            speed: undefined
+            speed: null
         },
-        visibility: undefined,
-        name: undefined,
+        visibility: null,
+        name: null,
         sys: {
-            country: undefined,
-            sunrise: undefined,
-            sunset: undefined
+            country: null,
+            sunrise: null,
+            sunset: null
         }
     },
-    dataCompare : {}
-    
+    dataCompare : {},
+    loading: false,
+    downloadError: null
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -33,7 +34,14 @@ const rootReducer = (state = initialState, action) => {
         case 'SEARCH_CITY':
             return {...state, city: action.payload};
         case 'GET_DATA': 
-            return {...state, data: action.payload};
+            return {...state, data: action.payload, downloadError: null};
+        case 'START_DOWNLOAD':
+            return{...state, loading: action.payload};
+        case 'END_DOWNLOAD':
+            console.log(state);
+            return{...state, loading: action.payload};
+        case 'ERROR_DOWNLOAD':
+            return {...state, downloadError : action.payload, loading: false };
         default:
              return state;
     }
