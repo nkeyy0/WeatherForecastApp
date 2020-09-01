@@ -6,10 +6,7 @@ import BoxInfoDisplay from '../containers/BoxInfoDisplay';
 
 class WeatherInfo extends React.Component {
     render(){
-        const {data, loading, downloadError} = this.props;
-        console.log(loading);
-        console.log(downloadError);
-        console.log(data);
+        const {loading, downloadError} = this.props;
         return((downloadError === '404') ? 
         <Typography variant = "h2"> City not found</Typography> 
         :(loading) ?

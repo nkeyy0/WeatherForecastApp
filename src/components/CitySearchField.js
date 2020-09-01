@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 
 class CitySearchField extends React.Component {
     render(){
-        const {cityChanged, data, onChange, onSubmit, onClick} = this.props
+        const {cityChanged, data, onChange, onSubmit, loadDataFromOpenWeatherMap, loadDataFromWeatherStack, api} = this.props
         console.log(cityChanged);
         return(
             <form onSubmit = {(e) => {
@@ -24,7 +24,7 @@ class CitySearchField extends React.Component {
                 <Button
                 size = "large"
                 startIcon = {<SearchIcon></SearchIcon>} 
-                onClick = {onClick.bind(this, cityChanged, data)}>Search</Button>
+                onClick = {(api === 'OpenWeatherMap') ? loadDataFromOpenWeatherMap.bind(this, cityChanged): (api === 'Weatherstack') ? loadDataFromWeatherStack.bind(this, cityChanged): null}>Search</Button>
             </form>
         )
     }

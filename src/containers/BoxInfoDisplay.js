@@ -6,7 +6,17 @@ import BoxWeather from '../components/BoxWeather';
 const mapStateToProps = (state) => {
     console.log(state)
     return { 
-        data : state.data,
+        descriptionWeather: state.descriptionWeather,
+        cityName: state.cityName,
+        countryName: state.countryName,
+        temperature: state.temperature,
+        humidity: state.humidity,
+        windSpeed: state.windSpeed,
+        visibility: state.visibility,
+        pressure: state.pressure,
+        sunrise: state.sunrise,
+        sunset: state.sunset,
+        downloadError: state.downloadError
     }
 };
 

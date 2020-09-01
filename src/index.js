@@ -5,6 +5,10 @@ import { Provider } from 'react-redux';
 import App from './components/App';
 import rootReducer from './reducers/index';
 import thunk from 'redux-thunk';
+import dotenv from 'dotenv-webpack';
+
+dotenv.config()
+
 
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

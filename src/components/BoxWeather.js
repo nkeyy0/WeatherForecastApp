@@ -10,53 +10,53 @@ import getSunrise from '../convert/getSunrise';
 
 class BoxWeather extends React.Component {
 render() {
-    const {data} = this.props;
+    const {descriptionWeather, cityName, countryName, temperature, humidity, windSpeed, visibility, pressure, sunrise, sunset} = this.props;
     return(
 <Box>
-                {(data.name && data.sys.country) ? 
+                {(cityName && countryName) ? 
                 <Typography variant = "h2">
                     <LocationOnIcon fontSize = 'large'/> 
-                    {data.name}:
+                    {cityName}, {countryName}:
                 </Typography> 
                 : null}
-                {(data.weather[0].description) ?
+                {(descriptionWeather) ?
                  <Typography variant = "body1">
-                    {firstLetterToUpperCase(data.weather[0].description)}
+                    {firstLetterToUpperCase(descriptionWeather)}
                     </Typography>
                 : null}
-                {(data.main.temp) ?
+                {(temperature) ?
                  <Typography variant = "body1">
-                    Temperature: {convertToCelsius(data.main.temp)} &#8451;
+                    Temperature: {convertToCelsius(temperature)} &#8451;
                  </Typography> 
                  : null}
-                {(data.main.humidity) ? 
+                {(humidity) ? 
                 <Typography variant = "body1">
-                    Humidity: {data.main.humidity} %
+                    Humidity: {humidity} %
                 </Typography>
                  : null}
-                {(data.wind.speed) ? 
+                {(windSpeed) ? 
                 <Typography variant = "body1">
-                    Wind speed: {convertWindSpeed(data.wind.speed)} M/s
+                    Wind speed: {convertWindSpeed(windSpeed)} M/s
                 </Typography>
                  : null}
-                {(data.visibility) ?
+                {(visibility) ?
                  <Typography variant = "body1">
-                    Visibility: {convertToKilometers(data.visibility)} km
+                    Visibility: {convertToKilometers(visibility)} km
                  </Typography> 
                  : null}
-                {(data.main.pressure) ?
+                {(pressure) ?
                  <Typography variant = "body1">
-                    Pressure: {data.main.pressure} hPa
+                    Pressure: {pressure} hPa
                  </Typography>
                   : null}
-                  {(data.sys.sunrise) ?
+                  {(sunrise) ?
                  <Typography variant = "body1">
-                 Sunrise : {getSunrise(data.sys.sunrise)} 
+                 Sunrise : {getSunrise(sunrise)} 
                  </Typography>
                   : null}
-                  {(data.sys.sunset) ?
+                  {(sunset) ?
                  <Typography variant = "body1">
-                 Sunset : {getSunrise(data.sys.sunset)} 
+                 Sunset : {getSunrise(sunset)} 
                  </Typography>
                   : null}
             </Box>

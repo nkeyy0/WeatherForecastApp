@@ -1,1 +1,1 @@
-export default (speed) => Math.floor((speed * 1.6)* 100) / 100;
+export default (speed) => Math.floor((speed * 100) / 100);
