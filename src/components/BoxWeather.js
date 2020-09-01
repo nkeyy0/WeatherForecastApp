@@ -1,8 +1,6 @@
 import React from 'react';
-import convertToCelsius from '../convert/convertToСelsius';
 import firstLetterToUpperCase from '../convert/firstLetterToUpperCase'
 import convertWindSpeed from '../convert/convertWindSpeed';
-import convertToKilometers from '../convert/convertToKilometers'
 import Box from '@material-ui/core/Box';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Typography } from '@material-ui/core';
@@ -10,7 +8,7 @@ import getSunrise from '../convert/getSunrise';
 
 class BoxWeather extends React.Component {
 render() {
-    const {descriptionWeather, cityName, countryName, temperature, humidity, windSpeed, visibility, pressure, sunrise, sunset} = this.props;
+    const {descriptionWeather, cityName, countryName, temperature, humidity, windSpeed, visibility, pressure, sunrise, sunset, api} = this.props;
     return(
 <Box>
                 {(cityName && countryName) ? 
@@ -26,7 +24,7 @@ render() {
                 : null}
                 {(temperature) ?
                  <Typography variant = "body1">
-                    Temperature: {convertToCelsius(temperature)} &#8451;
+                    Temperature: {temperature} &#8451;
                  </Typography> 
                  : null}
                 {(humidity) ? 
@@ -41,7 +39,7 @@ render() {
                  : null}
                 {(visibility) ?
                  <Typography variant = "body1">
-                    Visibility: {convertToKilometers(visibility)} km
+                    Visibility: {visibility} km
                  </Typography> 
                  : null}
                 {(pressure) ?

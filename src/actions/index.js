@@ -1,5 +1,3 @@
-import { colors } from "@material-ui/core";
-
 export const searchCity = (city) => {
     console.log('Search...');
     return{
@@ -49,7 +47,7 @@ export const setDataFromWeatherStack = (dataFromAPI) => {
 const API_KEY = '468b49f7d4966997c9d210546288fd30';
 export const loadDataFromOpenWeatherMap = (city) =>  dispatch => {
         dispatch(startDownload);
-            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${process.env.API_KEY_FROM_OPEN_WEATHER}`)
+            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}&units=metric`)
                 .then(response => response.json())
                     .then(json => (json.cod === 200) ? dispatch(setDataFromOpenWeatherMap(json)) : dispatch(errorDownload(json.cod)))
                         .then(() => dispatch(endDownload))
@@ -60,7 +58,7 @@ export const loadDataFromOpenWeatherMap = (city) =>  dispatch => {
 const API_KEY_2 = '7952bc4723eb17ee3bba41789e20faf0';
 export const loadDataFromWeatherStack = (city) =>  dispatch => {
     dispatch(startDownload);
-        fetch(`http://api.weatherstack.com/current?access_key=${API_KEY_2}&query=${city}`)
+        fetch(`http://api.weatherstack.com/current?access_key=${API_KEY_2}&query=${city}&units=m`)
             .then(response => response.json())
                 .then(json => dispatch(setDataFromWeatherStack(json)))
                     .then(() => dispatch(endDownload))
@@ -92,3 +90,5 @@ export const selectAPI = api =>
     payload: api
     }
 }
+
+

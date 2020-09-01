@@ -1,3 +1,5 @@
+import convertToKilometers from '../convert/convertToKilometers'
+
 const initialState = {
     city: '',
     cityChanged: '',
@@ -34,7 +36,7 @@ const rootReducer = (state = initialState, action) => {
                  pressure: action.payload.main.pressure,
                  descriptionWeather: action.payload.weather[0].description,
                  windSpeed: action.payload.wind.speed,
-                 visibility: action.payload.visibility,
+                 visibility: convertToKilometers(action.payload.visibility),
                  cityName: action.payload.name,
                  countryName: action.payload.sys.country,
                  sunrise: action.payload.sys.sunrise,
@@ -48,7 +50,7 @@ const rootReducer = (state = initialState, action) => {
                     pressure: action.payload.current.pressure,
                     descriptionWeather: action.payload.current.weather_descriptions[0],
                     windSpeed: action.payload.current.windSpeed,
-                    visibility: action.payload.current.visibility,
+                    visibility: action.payload.current.visibility.toFixed(1),
                     cityName: action.payload.location.name,
                     countryName: action.payload.location.country,
                     sunrise: null,

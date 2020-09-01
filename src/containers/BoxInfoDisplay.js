@@ -16,7 +16,8 @@ const mapStateToProps = (state) => {
         pressure: state.pressure,
         sunrise: state.sunrise,
         sunset: state.sunset,
-        downloadError: state.downloadError
+        downloadError: state.downloadError,
+        api: state.api
     }
 };
 
