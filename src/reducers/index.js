@@ -4,7 +4,7 @@ const initialState = {
     city: '',
     cityChanged: '',
     apiChanged: '',
-    api: 'OpenWeatherMap',
+    api: null,
     temperature: null,
     pressure: null,
     descriptionWeather: null,
@@ -15,6 +15,7 @@ const initialState = {
     countryName: null,
     sunrise: null,
     sunset: null,
+    weatherImage: null,
     data : {},
     dataCompare : {},
     loading: false,
@@ -41,6 +42,7 @@ const rootReducer = (state = initialState, action) => {
                  countryName: action.payload.sys.country,
                  sunrise: action.payload.sys.sunrise,
                  sunset: action.payload.sys.sunset,
+                 weatherImage: `http://openweathermap.org/img/w/${action.payload.weather[0].icon}.png`,
                  downloadError: null};
                  
         case 'SET_DATA_FROM_WEATHER_STACK':

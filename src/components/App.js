@@ -1,19 +1,32 @@
-import React from 'react';
-import CitySearch from '../containers/CitySearch'
-import WeatherInfoDisplay from '../containers/WeatherInfoDisplay';
-import SelectWeather from '../containers/SelectWeather'
+import React from "react";
+import CitySearchField from "./CitySearchField";
+import WeatherInfo from "./WeatherInfo";
+import { Card, Typography, Grid } from "@material-ui/core";
+import { Container } from "@material-ui/core";
+
 class App extends React.Component {
-    render(){
-        return (
-            <div>
-            <h1>Weather</h1>
-            <SelectWeather/>
-            <CitySearch/>
-            <WeatherInfoDisplay/>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <Container maxWidth="md">
+        <Card>
+          <Grid container direction = "column" spacing = {4}>
+            <Grid item>
+            <Typography variant="h1" align="center">
+              Weather
+            </Typography>
+            </Grid>
+            <Grid item>
+            <CitySearchField />
+            </Grid>
+            <Grid item>
+            <WeatherInfo />
+            </Grid>
+            
+          </Grid>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default App;
-

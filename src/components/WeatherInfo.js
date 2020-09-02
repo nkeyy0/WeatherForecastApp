@@ -1,20 +1,18 @@
-import React from 'react';
-import BoxWeather from './BoxWeather';
-import { CircularProgress, Typography } from '@material-ui/core';
-import BoxInfoDisplay from '../containers/BoxInfoDisplay';
+import React from "react";
+import BoxWeather from "./BoxWeather";
+import { CircularProgress, Typography } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
-
-class WeatherInfo extends React.Component {
-    render(){
-        const {loading, downloadError} = this.props;
-        return((downloadError === '404') ? 
-        <Typography variant = "h2"> City not found</Typography> 
-        :(loading) ?
-            <CircularProgress/>
-            :
-            <BoxInfoDisplay/>
-        );
-    }
-}
+const WeatherInfo = () => {
+  const loading = useSelector((state) => state.loading);
+  const downloadError = useSelector((state) => state.downloadError);
+  return downloadError === "404" ? (
+    <Typography variant="h2" align = "center" color = "error"> City not found</Typography>
+  ) : loading ? (
+    <CircularProgress />
+  ) : (
+    <BoxWeather />
+  );
+};
 
 export default WeatherInfo;
