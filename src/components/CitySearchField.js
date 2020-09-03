@@ -62,6 +62,8 @@ const CitySearchField = () => {
         <Grid item xs={3}>
           <Button
           fullWidth
+            variant = "contained"
+            color = "secondary"
             type="submit"
             size="large"
             startIcon={<SearchIcon></SearchIcon>}

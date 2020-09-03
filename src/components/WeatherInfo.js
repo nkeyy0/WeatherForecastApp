@@ -6,13 +6,16 @@ import { useSelector } from "react-redux";
 const WeatherInfo = () => {
   const loading = useSelector((state) => state.loading);
   const downloadError = useSelector((state) => state.downloadError);
-  return downloadError === "404" ? (
-    <Typography variant="h2" align = "center" color = "error"> City not found</Typography>
-  ) : loading ? (
+  return (downloadError === "404" ? 
+    <Typography variant="h2" align = "center" color = "error"> City not found</Typography>:
+    downloadError === 'You have denied access to geolocation' ?  
+    <Typography variant="h2" align = "center" color = "error">You have denied access to geolocation</Typography>
+   : loading ? 
     <CircularProgress />
-  ) : (
+   : 
     <BoxWeather />
-  );
-};
+
+);
+}
 
 export default WeatherInfo;

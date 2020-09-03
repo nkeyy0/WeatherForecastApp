@@ -3,7 +3,7 @@ import firstLetterToUpperCase from "../convert/firstLetterToUpperCase";
 import convertWindSpeed from "../convert/convertWindSpeed";
 import Box from "@material-ui/core/Box";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, Container } from "@material-ui/core";
 import { CardMedia } from "@material-ui/core";
 import getSunrise from "../convert/getSunrise";
 import { useSelector } from "react-redux";
@@ -24,9 +24,11 @@ const BoxWeather = () => {
   return (
     <Box align="center">
       {cityName && countryName ? (
-        <Typography variant="h2" align="center" color="textPrimary">
-          <LocationOnIcon></LocationOnIcon>
-          {cityName}, {countryName}
+        <Container>
+          <Typography variant="h2" color="textPrimary">
+            <LocationOnIcon></LocationOnIcon>
+            {cityName}, {countryName}
+          </Typography>
           <br />
           <img src={`${weatherImage}`} />
           {temperature ? (
@@ -34,7 +36,7 @@ const BoxWeather = () => {
               {temperature} &#8451;
             </Typography>
           ) : null}
-        </Typography>
+        </Container>
       ) : null}
       {descriptionWeather ? (
         <Typography variant="h4">
@@ -42,39 +44,41 @@ const BoxWeather = () => {
         </Typography>
       ) : null}
       <Grid container spacing={4} justify="center" direction="row">
-        <Grid item>
+        <Grid item item xs={8} sm={2}>
           {humidity ? (
-            <Typography variant="h6" color="textSecondary">
-              Humidity: {humidity} %
+            <Typography variant="body1" color="textSecondary">
+              <Typography variant="h6">Humidity</Typography>
+              {humidity} %
             </Typography>
           ) : null}
         </Grid>
-        <Grid item>
+        <Grid item item xs={8} sm={2}>
           {windSpeed ? (
-            <Typography variant="h6" color="textSecondary">
-              Wind speed: {convertWindSpeed(windSpeed)} M/s
+            <Typography variant="body1" color="textSecondary">
+              <Typography variant="h6">Wind speed</Typography>
+              {convertWindSpeed(windSpeed)} M/s
             </Typography>
           ) : null}
         </Grid>
-        <Grid item>
+        <Grid item item xs={8} sm={2}>
           {visibility ? (
-            <Typography variant="h6" color="textSecondary">
-              Visibility: {visibility} km
+            <Typography variant="body1" color="textSecondary">
+              <Typography variant="h6">Visibility</Typography> {visibility} km
             </Typography>
           ) : null}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={8} sm={2}>
           {pressure ? (
-            <Typography variant="h6" color="textSecondary">
-              Pressure : {pressure} hPa
+            <Typography variant="body1" color="textSecondary">
+              <Typography variant="h6">Pressure</Typography> {pressure} hPa
             </Typography>
           ) : null}
         </Grid>
       </Grid>
       <Grid container spacing={4} justify="center">
-        <Grid item xs={3}>
+        <Grid item xs={8} sm={4}>
           {sunrise ? (
-            <Typography variant="h6" color="textSecondary">
+            <Typography variant="body1" color="textSecondary">
               {getSunrise(sunrise)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunrise--v1.png" />
@@ -82,9 +86,9 @@ const BoxWeather = () => {
             </Typography>
           ) : null}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={8} sm={4}>
           {sunset ? (
-            <Typography variant="h6" color="textSecondary">
+            <Typography variant="body1" color="textSecondary">
               {getSunrise(sunset)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunset--v2.png" />

@@ -3,9 +3,18 @@ import CitySearchField from "./CitySearchField";
 import WeatherInfo from "./WeatherInfo";
 import { Card, Typography, Grid } from "@material-ui/core";
 import { Container } from "@material-ui/core";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadDataFromOpenWeatherMapByCoord, DisplayInfoByGeo } from '../actions/index';
 
-class App extends React.Component {
-  render() {
+
+const App = () =>  {
+    const geoLatitude = useSelector(state => state.geoLatitude);
+    const geoLongitude = useSelector(state => state.geoLongitude);
+    const dispatch = useDispatch();
+    useEffect( ()=> {
+       dispatch(DisplayInfoByGeo())   
+    }, [dispatch]);
     return (
       <Container maxWidth="md">
         <Card>
@@ -27,6 +36,6 @@ class App extends React.Component {
       </Container>
     );
   }
-}
+
 
 export default App;

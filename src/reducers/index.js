@@ -1,4 +1,10 @@
-import convertToKilometers from '../convert/convertToKilometers'
+import convertToKilometers from '../convert/convertToKilometers';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+    key: weather,
+}
 
 const initialState = {
     city: '',
@@ -19,8 +25,10 @@ const initialState = {
     data : {},
     dataCompare : {},
     loading: false,
-    downloadError: null
-};
+    downloadError: null,
+    geoLatitude: null,
+    geoLongitude: null  
+    };
 
 const rootReducer = (state = initialState, action) => {
     switch(action.type){
@@ -65,9 +73,16 @@ const rootReducer = (state = initialState, action) => {
             console.log(state);
             return{...state, loading: action.payload};
         case 'ERROR_DOWNLOAD':
+            console.log(state);
             return {...state, downloadError : action.payload, loading: false };
         case 'SELECT_API':
             return{...state, api: action.payload}
+        case 'SET_USER_COORDINATES': {
+            return  {...state, geoLatitude: action.payload.coords.latitude, geoLongitude: action.payload.coords.longitude, loading : false }
+        }
+        case 'GET_ERROR' : {
+            return {...state, downloadError: action.payload, loading: false}
+        }
         default:
              return state;
     }
