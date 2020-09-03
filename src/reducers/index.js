@@ -1,10 +1,13 @@
 import convertToKilometers from '../convert/convertToKilometers';
 import { persistReducer } from 'redux-persist';
+import { combineReducers } from 'redux';
 import storage from 'redux-persist/lib/storage';
 
-const persistConfig = {
-    key: weather,
-}
+// const persistConfig = {
+//     key: weather,
+//     storage,
+
+// }
 
 const initialState = {
     city: '',

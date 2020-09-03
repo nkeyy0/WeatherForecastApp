@@ -5,13 +5,13 @@ import { Provider } from 'react-redux';
 import App from './components/App';
 import rootReducer from './reducers/index';
 import thunk from 'redux-thunk';
-import { persistStrore } from 'redux-persist';
+
 
 
 
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
-const persistor = presistStrore(store);
+// const persistor = presistStrore(store);
 
 ReactDOM.render(
 <Provider store = {store}>
@@ -19,4 +19,4 @@ ReactDOM.render(
 </Provider>,
 document.getElementById('root'));
 
-export default {store, persistor}
+// export default {store, persistor}
