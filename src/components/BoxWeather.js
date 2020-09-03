@@ -30,12 +30,15 @@ const BoxWeather = () => {
             {cityName}, {countryName}
           </Typography>
           <br />
-          <img src={`${weatherImage}`} />
-          {temperature ? (
+          <Grid container justify = "center" spacing = {2} alignItems = "baseline">
+            <Grid item ><img src={`${weatherImage}`} /></Grid>
+            <Grid item >{temperature ? (
             <Typography variant="h4" display="inline">
               {temperature} &#8451;
             </Typography>
-          ) : null}
+          ) : null}</Grid>
+          
+          </Grid>
         </Container>
       ) : null}
       {descriptionWeather ? (
