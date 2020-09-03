@@ -46,8 +46,9 @@ const CitySearchField = () => {
     >
       <Grid container direction="row" justify="center" spacing={4}>
         <Grid item xs={3}>
-          <TextField fullWidth
-            placeholder = "Enter city"
+          <TextField
+            fullWidth
+            placeholder="Enter city"
             value={cityInput}
             onChange={handleInputChange}
           />
@@ -61,9 +62,9 @@ const CitySearchField = () => {
         </Grid>
         <Grid item xs={3}>
           <Button
-          fullWidth
-            variant = "contained"
-            color = "secondary"
+            fullWidth
+            variant="contained"
+            color="secondary"
             type="submit"
             size="large"
             startIcon={<SearchIcon></SearchIcon>}
