@@ -14,9 +14,10 @@ const App = () => {
   const geoLatitude = useSelector((state) => state.geoLatitude);
   const geoLongitude = useSelector((state) => state.geoLongitude);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(DisplayInfoByGeo());
-  }, [dispatch]);
+  if (!localStorage.getItem("persist:root"))
+    useEffect(() => {
+      dispatch(DisplayInfoByGeo());
+    }, [dispatch]);
   return (
     <Container maxWidth="md">
       <Card>

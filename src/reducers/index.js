@@ -26,7 +26,7 @@ const initialState = {
     loading: false,
     downloadError: null,
     geoLatitude: null,
-    geoLongitude: null  
+    geoLongitude: null, 
     };
 
 const rootReducer = (state = initialState, action) => {
