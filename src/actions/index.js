@@ -54,8 +54,10 @@ export const loadDataFromAPIs = (api, city) => (dispatch) => {
           TIME_UPDATE) ||
       !localStorage.getItem("persist:root") ||
       `"${city.toUpperCase()}"` !==
-        JSON.parse(localStorage.getItem("persist:root")).cityName.toUpperCase() || 
-        api === "OpenWeatherMap"
+        JSON.parse(
+          localStorage.getItem("persist:root")
+        ).cityName.toUpperCase() ||
+      api === "OpenWeatherMap"
     ) {
       dispatch(startDownload);
       fetch(
@@ -77,8 +79,10 @@ export const loadDataFromAPIs = (api, city) => (dispatch) => {
           TIME_UPDATE) ||
       !localStorage.getItem("persist:root") ||
       `"${city.toUpperCase()}"` !==
-        JSON.parse(localStorage.getItem("persist:root")).cityName.toUpperCase()
-        || api === 'Weatherstack'
+        JSON.parse(
+          localStorage.getItem("persist:root")
+        ).cityName.toUpperCase() ||
+      api === "Weatherstack"
     ) {
       dispatch(startDownload);
       fetch(

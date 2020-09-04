@@ -23,7 +23,6 @@ const App = () => {
    if (!localStorage.getItem('persist:root') || !JSON.parse(localStorage.getItem('persist:root')).hasOwnProperty('cityName')){
     useEffect(() => {
       dispatch(DisplayInfoByGeo());
-      dispatch(selectApi('OpenWeatherMap'));
     }, [dispatch]);
   }
 

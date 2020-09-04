@@ -35,14 +35,14 @@ const CitySearchField = () => {
     changeSelectAPI(event.target.value);
   };
 
+  const handleOnSubmit = (event) => {
+    dispatch(loadDataFromAPIs(selectAPI, cityInput));
+    event.preventDefault();
+    submitTime(Date.now());
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        dispatch(loadDataFromAPIs(selectAPI, cityInput));
-        e.preventDefault();
-        submitTime(Date.now());
-      }}
-    >
+    <form onSubmit={handleOnSubmit}>
       <Grid container direction="row" justify="center" spacing={4}>
         <Grid item xs={3}>
           <TextField
