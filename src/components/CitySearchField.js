@@ -5,7 +5,9 @@ import TextField from "@material-ui/core/TextField";
 import {
   searchCity,
   loadDataFromOpenWeatherMap,
-  loadDataFromWeatherStack,
+  loadDataFromAPIs,
+  setTimeRequest,
+  selectApi,
 } from "../actions/index";
 import { changeInputSearch } from "../actions/index";
 import { selectOnChange } from "../actions/index";
@@ -17,11 +19,11 @@ import { FormControl } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 
 const CitySearchField = () => {
-  const cityChanged = useSelector((state) => state.cityChanged);
-  const api = useSelector((state) => state.api);
   const dispatch = useDispatch();
   const [cityInput, cityChangeInput] = useState("");
   const [selectAPI, changeSelectAPI] = useState("");
+  const [timeCompare, submitTime] = useState("");
+  const dateCompare = Date.now();
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -36,12 +38,9 @@ const CitySearchField = () => {
   return (
     <form
       onSubmit={(e) => {
-        selectAPI === "OpenWeatherMap"
-          ? dispatch(loadDataFromOpenWeatherMap(cityInput))
-          : selectAPI === "Weatherstack"
-          ? dispatch(loadDataFromWeatherStack(cityInput))
-          : null;
+        dispatch(loadDataFromAPIs(selectAPI, cityInput));
         e.preventDefault();
+        submitTime(Date.now());
       }}
     >
       <Grid container direction="row" justify="center" spacing={4}>

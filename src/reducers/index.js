@@ -3,11 +3,6 @@ import { persistReducer } from 'redux-persist';
 import { combineReducers } from 'redux';
 import storage from 'redux-persist/lib/storage';
 
-// const persistConfig = {
-//     key: weather,
-//     storage,
-
-// }
 
 const initialState = {
     city: '',
@@ -26,7 +21,8 @@ const initialState = {
     loading: false,
     downloadError: null,
     geoLatitude: null,
-    geoLongitude: null, 
+    geoLongitude: null,
+    time: null
     };
 
 const rootReducer = (state = initialState, action) => {
@@ -82,6 +78,9 @@ const rootReducer = (state = initialState, action) => {
         }
         case 'GET_ERROR' : {
             return {...state, downloadError: action.payload, loading: false}
+        }
+        case 'SET_TIME_REQUEST': {
+            return {...state, time: action.payload}
         }
         default:
              return state;

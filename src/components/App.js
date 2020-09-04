@@ -6,18 +6,29 @@ import { Container } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loadDataFromOpenWeatherMapByCoord,
+  loadDataFromOpenWeatherMap,
   DisplayInfoByGeo,
+  setTimeRequest,
+  selectApi
 } from "../actions/index";
 
 const App = () => {
+  const cityName = useSelector(state => state.cityName);
   const geoLatitude = useSelector((state) => state.geoLatitude);
   const geoLongitude = useSelector((state) => state.geoLongitude);
   const dispatch = useDispatch();
-  if (!localStorage.getItem("persist:root"))
+  const dateCompare = Date.now();
+  console.log(dateCompare);
+
+   if (!localStorage.getItem('persist:root') || !JSON.parse(localStorage.getItem('persist:root')).hasOwnProperty('cityName')){
     useEffect(() => {
       dispatch(DisplayInfoByGeo());
+      dispatch(selectApi('OpenWeatherMap'));
     }, [dispatch]);
+  }
+
+  
+    
   return (
     <Container maxWidth="md">
       <Card>

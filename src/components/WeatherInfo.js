@@ -8,7 +8,6 @@ const WeatherInfo = () => {
   const downloadError = useSelector((state) => state.downloadError);
   return downloadError === "404" ? (
     <Typography variant="h2" align="center" color="error">
-      {" "}
       City not found
     </Typography>
   ) : downloadError === "You have denied access to geolocation" ? (
