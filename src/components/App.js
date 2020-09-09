@@ -31,9 +31,9 @@ const App = () => {
   return (
     <Container maxWidth="md">
       <Card>
-        <Grid container direction="column" spacing={4}>
-          <Grid item>
-            <Typography variant="h1" align="center">
+        <Grid container direction="column" spacing={4} wrap = 'nowrap'>
+          <Grid item justify = 'center' zeroMinWidth wrap = 'nowrap'>
+            <Typography variant="h3" align="center">
               Weather
             </Typography>
           </Grid>

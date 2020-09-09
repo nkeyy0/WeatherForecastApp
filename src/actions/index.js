@@ -70,6 +70,7 @@ export const loadDataFromAPIs = (api, city) => (dispatch) => {
             : dispatch(errorDownload(json.cod))
         )
         .then(dispatch(endDownload));
+      dispatch(selectApi(api));
       dispatch(setTimeRequest(Date.now()));
     }
   } else if (api === "Weatherstack") {
@@ -91,6 +92,8 @@ export const loadDataFromAPIs = (api, city) => (dispatch) => {
         .then((response) => response.json())
         .then((json) => dispatch(setDataFromWeatherStack(json)))
         .then(() => dispatch(endDownload));
+        dispatch(selectApi(api));
+        dispatch(setTimeRequest(Date.now()));
     }
   } else dispatch(endDownload);
   console.log(Date.now());
@@ -156,6 +159,7 @@ export const DisplayInfoByGeo = () => async (dispatch) => {
     const data = await response.json();
     dispatch(setDataFromOpenWeatherMap(data));
     dispatch(endDownload);
+    dispatch(selectApi('OpenWeatherMap'))
   } catch (e) {
     console.error(e);
     dispatch(getError(e.message));

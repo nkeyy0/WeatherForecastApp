@@ -47,7 +47,7 @@ const BoxWeather = () => {
         </Typography>
       ) : null}
       <Grid container spacing={4} justify="center" direction="row">
-        <Grid item item xs={8} sm={2}>
+        <Grid item item xs={8} sm={4}>
           {humidity ? (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Humidity</Typography>
@@ -55,7 +55,7 @@ const BoxWeather = () => {
             </Typography>
           ) : null}
         </Grid>
-        <Grid item item xs={8} sm={2}>
+        <Grid item item xs={8} sm={4}>
           {windSpeed ? (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Wind speed</Typography>
@@ -63,14 +63,16 @@ const BoxWeather = () => {
             </Typography>
           ) : null}
         </Grid>
-        <Grid item item xs={8} sm={2}>
+        </Grid>
+        <Grid container spacing={4} justify="center" direction="row">
+        <Grid item item xs={8} sm={4}>
           {visibility ? (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Visibility</Typography> {visibility} km
             </Typography>
           ) : null}
         </Grid>
-        <Grid item xs={8} sm={2}>
+        <Grid item xs={8} sm={4}>
           {pressure ? (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Pressure</Typography> {pressure} hPa
@@ -81,7 +83,7 @@ const BoxWeather = () => {
       <Grid container spacing={4} justify="center">
         <Grid item xs={8} sm={4}>
           {sunrise ? (
-            <Typography variant="body1" color="textSecondary">
+            <Typography variant="body1" color="primary">
               {getSunrise(sunrise)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunrise--v1.png" />
@@ -91,7 +93,7 @@ const BoxWeather = () => {
         </Grid>
         <Grid item xs={8} sm={4}>
           {sunset ? (
-            <Typography variant="body1" color="textSecondary">
+            <Typography variant="body1" color="primary">
               {getSunrise(sunset)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunset--v2.png" />
