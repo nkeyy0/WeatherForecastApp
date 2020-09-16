@@ -33,7 +33,7 @@ const rootReducer = (state = initialState, action) => {
             return{...state, api: action.payload}
         case 'SEARCH_CITY':
             return {...state, city: action.payload};
-        case 'SET_DATA_FROM_OPEN_WEATHER_MAP': 
+        case 'SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESED': 
             return {...state,
                  temperature: action.payload.main.temp,
                  humidity:action.payload.main.humidity,
@@ -48,7 +48,7 @@ const rootReducer = (state = initialState, action) => {
                  weatherImage: `http://openweathermap.org/img/w/${action.payload.weather[0].icon}.png`,
                  downloadError: null};
                  
-        case 'SET_DATA_FROM_WEATHER_STACK':
+        case 'SET_DATA_FROM_WEATHER_STACK_SUCCESED':
             return{...state,
                     temperature: action.payload.current.temperature,
                     humidity: action.payload.current.humidity,
@@ -73,10 +73,8 @@ const rootReducer = (state = initialState, action) => {
             return {...state, downloadError : action.payload, loading: false };
         case 'SELECT_API':
             return{...state, api: action.payload}
-        case 'SET_USER_COORDINATES': {
-            return  {...state, geoLatitude: action.payload.coords.latitude, geoLongitude: action.payload.coords.longitude, loading : false }
-        }
         case 'GET_ERROR' : {
+            console.log(state);
             return {...state, downloadError: action.payload, loading: false}
         }
         case 'SET_TIME_REQUEST': {

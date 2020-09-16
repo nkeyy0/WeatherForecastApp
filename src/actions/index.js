@@ -1,5 +1,6 @@
 import resolve from "resolve";
-const TIME_UPDATE = 7200000;
+
+
 
 export const searchCity = (city) => {
   console.log("Search...");
@@ -30,51 +31,43 @@ export const selectOnChange = (APIChanged) => {
   };
 };
 
-export const setDataFromOpenWeatherMap = (dataFromAPI) => {
+export const setDataFromOpenWeatherMapSuccess = (dataFromAPI) => {
   console.log(dataFromAPI);
   return {
-    type: "SET_DATA_FROM_OPEN_WEATHER_MAP",
+    type: "SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESED",
     payload: dataFromAPI,
   };
 };
 
-export const setDataFromWeatherStack = (dataFromAPI) => {
+export const setDataFromWeatherStackSuccess = (dataFromAPI) => {
   console.log(dataFromAPI);
   return {
-    type: "SET_DATA_FROM_WEATHER_STACK",
+    type: "SET_DATA_FROM_WEATHER_STACK_SUCCESED",
     payload: dataFromAPI,
   };
 };
 
-export const loadDataFromAPIs = (api, city) => (dispatch) => {
-  if (api === "OpenWeatherMap") {
-    dispatch(startDownload);
-    fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
-    )
-      .then((response) => response.json())
-      .then((json) =>
-        json.cod === 200
-          ? dispatch(setDataFromOpenWeatherMap(json))
-          : dispatch(errorDownload(json.cod))
-      )
-      .then(dispatch(endDownload));
-    dispatch(selectApi(api));
-    dispatch(setTimeRequest(Date.now()));
-  } else if (api === "Weatherstack") {
-    dispatch(startDownload);
-    fetch(
-      `http://api.weatherstack.com/current?access_key=${process.env.API_KEY_FROM_WEATHERSTACK}&query=${city}&units=m`
-    )
-      .then((response) => response.json())
-      .then((json) => dispatch(setDataFromWeatherStack(json)))
-      .then(() => dispatch(endDownload));
-    dispatch(selectApi(api));
-    dispatch(setTimeRequest(Date.now()));
-  } else dispatch(endDownload);
-  console.log(Date.now());
-  console.log(api);
+export const loadDataFromOpenWeatherMap = city => {
+  return {
+    type: "LOAD_DATA_FROM_OPENWEATHERMAP",
+    payload: city
+  };
 };
+
+export const loadDataFromWeatherstack = city => {
+  return {
+    type: "LOAD_DATA_FROM_WEATHERSTACK",
+    payload: city
+  };
+};
+
+export const loadGeolocationFromOpenWeatherMap = () => {
+  return {
+    type: "LOAD_GEOLOCATION_FROM_OPENWEATHERMAP",
+  };
+};
+
+
 
 export const startDownload = {
   type: "START_DOWNLOAD",
@@ -98,13 +91,22 @@ export const selectApi = (api) => {
   };
 };
 
-export const setUserCoordinates = (data) => {
-  console.log(data);
-  return {
-    type: "SET_USER_COORDINATES",
-    payload: data,
-  };
-};
+// export const setUserCoordinates = (data) => {
+//   console.log(data);
+//   return {
+//     type: "SET_USER_COORDINATES",
+//     payload: data,
+//   };
+// };
+
+// export const loadGeolocation = () => async (dispatch) => {
+//   dispatch(startDownload);
+//   return new Promise((resolve, reject) => {
+//     navigator.geolocation.watchPosition(resolve, reject);
+//   })
+//     .then((res) => dispatch(setUserCoordinates(res)))
+//     .catch((error) => dispatch(getError(error)));
+// };
 
 export const getError = (error) => {
   return {
@@ -113,34 +115,7 @@ export const getError = (error) => {
   };
 };
 
-export const loadGeolocation = () => async (dispatch) => {
-  dispatch(startDownload);
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.watchPosition(resolve, reject);
-  })
-    .then((res) => dispatch(setUserCoordinates(res)))
-    .catch((error) => dispatch(getError(error)));
-};
 
-export const DisplayInfoByGeo = () => async (dispatch) => {
-  try {
-    const { payload } = await dispatch(loadGeolocation());
-    if (payload.code == 1) {
-      throw new Error("You have denied access to geolocation");
-    }
-    dispatch(startDownload);
-    const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?lat=${payload.coords.latitude}&lon=${payload.coords.longitude}&appid=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
-    );
-    const data = await response.json();
-    dispatch(setDataFromOpenWeatherMap(data));
-    dispatch(endDownload);
-    dispatch(selectApi("OpenWeatherMap"));
-  } catch (e) {
-    console.error(e);
-    dispatch(getError(e.message));
-  }
-};
 
 export const setTimeRequest = (time) => {
   return {

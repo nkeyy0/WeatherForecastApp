@@ -6,33 +6,28 @@ import { Container } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loadDataFromOpenWeatherMap,
-  DisplayInfoByGeo,
-  setTimeRequest,
-  selectApi
+  loadGeolocationFromOpenWeatherMap
 } from "../actions/index";
 
 const App = () => {
-  const cityName = useSelector(state => state.cityName);
+  const cityName = useSelector((state) => state.cityName);
   const geoLatitude = useSelector((state) => state.geoLatitude);
   const geoLongitude = useSelector((state) => state.geoLongitude);
   const dispatch = useDispatch();
   const dateCompare = Date.now();
   console.log(dateCompare);
 
-   if (!localStorage.getItem('persist:root') || !JSON.parse(localStorage.getItem('persist:root')).hasOwnProperty('cityName')){
-    
-      dispatch(DisplayInfoByGeo());
-    
+  if (
+    !localStorage.getItem("persist:root") 
+  ) {
+    dispatch(loadGeolocationFromOpenWeatherMap());
   }
 
-  
-    
   return (
     <Container maxWidth="md">
       <Card>
-        <Grid container direction="column" spacing={4} wrap = 'nowrap'>
-          <Grid item justify = 'center' zeroMinWidth wrap = 'nowrap'>
+        <Grid container direction="column" spacing={4} wrap="nowrap">
+          <Grid item justify="center" zeroMinWidth wrap="nowrap">
             <Typography variant="h3" align="center">
               Weather
             </Typography>
