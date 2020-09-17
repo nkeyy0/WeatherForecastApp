@@ -1,5 +1,5 @@
 import React from "react";
-import BoxWeather from "./BoxWeather";
+import BoxWeather from "../BoxWeather/BoxWeatherContainer";
 import { CircularProgress, Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {

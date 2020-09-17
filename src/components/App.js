@@ -1,6 +1,6 @@
 import React from "react";
-import CitySearchField from "./CitySearchField";
-import WeatherInfo from "./WeatherInfo";
+import CitySearchField from "./CitySearchField/CitySearchField";
+import WeatherInfo from "./WeatherInfo/WeatherInfo";
 import { Card, Typography, Grid } from "@material-ui/core";
 import { Container } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
