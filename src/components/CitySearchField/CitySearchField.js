@@ -7,14 +7,10 @@ import {
   loadDataFromOpenWeatherMap,
   loadDataFromWeatherstack,
   selectApi,
-} from "../actions/index";
-import { changeInputSearch } from "../actions/index";
-import { selectOnChange } from "../actions/index";
+} from "../../actions/index";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { FormControl } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import { useEffect } from "react";
 
@@ -24,8 +20,6 @@ const CitySearchField = () => {
   const cityName = useSelector((state) => state.cityName);
   const [cityInput, cityChangeInput] = useState("");
   const [selectAPI, changeSelectAPI] = useState("");
-  const [timeCompare, submitTime] = useState("");
-  const dateCompare = Date.now();
   useEffect(() => {
     cityChangeInput(cityName);
     changeSelectAPI(api);

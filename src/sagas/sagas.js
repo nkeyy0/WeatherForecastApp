@@ -1,5 +1,6 @@
 import { takeEvery, put, call, all } from "redux-saga/effects";
 import resolve from "resolve";
+import { LOAD_DATA_FROM_OPENWEATHERMAP, LOAD_DATA_FROM_WEATHERSTACK, LOAD_GEOLOCATION_FROM_OPENWEATHERMAP } from "../constants/constants";
 import {
   setDataFromOpenWeatherMapSuccess,
   setDataFromWeatherStackSuccess,
@@ -7,28 +8,28 @@ import {
   startDownload,
   errorDownload,
   selectApi,
-} from "./index";
+} from "../actions/index";
 
 export function* rootSaga() {
   yield all([
-    watchFecthDataFromOpenWeatherMap(),
-    watchFecthDataFromWeatherstack(),
-    watchGeolocaion(),
+    watchFetchDataFromOpenWeatherMap(),
+    watchFetchDataFromWeatherstack(),
+    watchGeolocation(),
   ]);
 }
 
-export function* watchGeolocaion() {
+export function* watchGeolocation() {
   yield takeEvery(
-    "LOAD_GEOLOCATION_FROM_OPENWEATHERMAP",
+    LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
     loadGeolocationWorker
   );
 }
-export function* watchFecthDataFromOpenWeatherMap() {
-  yield takeEvery("LOAD_DATA_FROM_OPENWEATHERMAP", fetchDataFromOpenWeather);
+export function* watchFetchDataFromOpenWeatherMap() {
+  yield takeEvery(LOAD_DATA_FROM_OPENWEATHERMAP, fetchDataFromOpenWeather);
 }
 
-export function* watchFecthDataFromWeatherstack() {
-  yield takeEvery("LOAD_DATA_FROM_WEATHERSTACK", fetchDataFromWeatherstack);
+export function* watchFetchDataFromWeatherstack() {
+  yield takeEvery(LOAD_DATA_FROM_WEATHERSTACK, fetchDataFromWeatherstack);
 }
 
 function* fetchDataFromOpenWeather(action) {
@@ -95,6 +96,6 @@ function* loadGeolocationWorker() {
     yield put(selectApi("OpenWeatherMap"));
     yield put(endDownload);
   } catch (error) {
-    yield put(errorDownload(error.messege));
+    yield put(errorDownload('Failed to access geolocation'));
   }
 }

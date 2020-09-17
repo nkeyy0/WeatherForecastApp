@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import {
   ERROR_DOWNLOAD_FROM_OPEN_WEATHER_MAP,
   ERROR_DOWNLOAD_FROM_WEATHERSTACK,
-} from "../constants/constants";
+} from "../../constants/constants";
 
 const WeatherInfo = () => {
   const loading = useSelector((state) => state.loading);

@@ -4,7 +4,7 @@ import thunk from "redux-thunk";
 import { persistStore, persistReducer} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
-import {rootSaga, watchFecthDataFromOpenWeatherMap, watchFecthDataFromWeatherstack} from './actions/sagas'
+import {rootSaga, watchFetchDataFromOpenWeatherMap, watchFetchDataFromWeatherstack} from './sagas/sagas'
 
 
 const saga = createSagaMiddleware();

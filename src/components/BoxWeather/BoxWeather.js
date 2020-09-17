@@ -1,11 +1,11 @@
 import React from "react";
-import firstLetterToUpperCase from "../convert/firstLetterToUpperCase";
-import convertWindSpeed from "../convert/convertWindSpeed";
+import { firstLetterToUpperCase } from "../../convert/index";
+import { convertWindSpeed } from "../../convert/index";
 import Box from "@material-ui/core/Box";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Typography, Grid, Container } from "@material-ui/core";
-import { CardMedia } from "@material-ui/core";
-import getSunrise from "../convert/getSunrise";
+import { getSunrise } from "../../convert/index";
+import { getSunset } from "../../convert/index";
 import { useSelector } from "react-redux";
 
 const BoxWeather = () => {
@@ -23,83 +23,86 @@ const BoxWeather = () => {
 
   return (
     <Box align="center">
-      {cityName && countryName ? (
+      {cityName && countryName && (
         <Container>
           <Typography variant="h2" color="textPrimary">
             <LocationOnIcon></LocationOnIcon>
             {cityName}, {countryName}
           </Typography>
           <br />
-          <Grid container justify = "center" spacing = {2} alignItems = "baseline">
-            <Grid item ><img src={`${weatherImage}`} /></Grid>
-            <Grid item >{temperature ? (
-            <Typography variant="h4" display="inline">
-              {temperature} &#8451;
-            </Typography>
-          ) : null}</Grid>
-          
+          <Grid container justify="center" spacing={2} alignItems="baseline">
+            <Grid item>
+              <img src={`${weatherImage}`} />
+            </Grid>
+            <Grid item>
+              {temperature && (
+                <Typography variant="h4" display="inline">
+                  {temperature} &#8451;
+                </Typography>
+              )}
+            </Grid>
           </Grid>
         </Container>
-      ) : null}
-      {descriptionWeather ? (
+      )}
+      {descriptionWeather && (
         <Typography variant="h4">
           {firstLetterToUpperCase(descriptionWeather)}
         </Typography>
-      ) : null}
+      )}
       <Grid container spacing={4} justify="center" direction="row">
         <Grid item item xs={8} sm={4}>
-          {humidity ? (
+          {humidity && (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Humidity</Typography>
               {humidity} %
             </Typography>
-          ) : null}
+          )}
         </Grid>
         <Grid item item xs={8} sm={4}>
-          {windSpeed ? (
+          {windSpeed && (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Wind speed</Typography>
               {convertWindSpeed(windSpeed)} M/s
             </Typography>
-          ) : null}
+          )}
         </Grid>
-        </Grid>
-        <Grid container spacing={4} justify="center" direction="row">
+      </Grid>
+      <Grid container spacing={4} justify="center" direction="row">
         <Grid item item xs={8} sm={4}>
-          {visibility ? (
+          {visibility && (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Visibility</Typography> {visibility} km
             </Typography>
-          ) : null}
+          )}
         </Grid>
         <Grid item xs={8} sm={4}>
-          {pressure ? (
+          {pressure && (
             <Typography variant="body1" color="textSecondary">
               <Typography variant="h6">Pressure</Typography> {pressure} hPa
             </Typography>
-          ) : null}
+          )}
         </Grid>
       </Grid>
       <Grid container spacing={4} justify="center">
         <Grid item xs={8} sm={4}>
-          {sunrise ? (
+          {sunrise && (
             <Typography variant="body1" color="primary">
               {getSunrise(sunrise)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunrise--v1.png" />
               </Grid>
             </Typography>
-          ) : null}
+          )}
         </Grid>
         <Grid item xs={8} sm={4}>
-          {sunset ? (
+          {sunset && (
             <Typography variant="body1" color="primary">
-              {getSunrise(sunset)}
+              {getSunset(sunset)}
               <Grid item>
                 <img src="https://img.icons8.com/cotton/64/000000/sunset--v2.png" />
               </Grid>
             </Typography>
-          ) : null}
+          )}
         </Grid>
       </Grid>
     </Box>
