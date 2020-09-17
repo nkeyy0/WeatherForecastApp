@@ -91,29 +91,9 @@ export const selectApi = (api) => {
   };
 };
 
-// export const setUserCoordinates = (data) => {
-//   console.log(data);
-//   return {
-//     type: "SET_USER_COORDINATES",
-//     payload: data,
-//   };
-// };
 
-// export const loadGeolocation = () => async (dispatch) => {
-//   dispatch(startDownload);
-//   return new Promise((resolve, reject) => {
-//     navigator.geolocation.watchPosition(resolve, reject);
-//   })
-//     .then((res) => dispatch(setUserCoordinates(res)))
-//     .catch((error) => dispatch(getError(error)));
-// };
 
-export const getError = (error) => {
-  return {
-    type: "GET_ERROR",
-    payload: error,
-  };
-};
+
 
 
 

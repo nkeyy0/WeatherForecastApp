@@ -6,6 +6,7 @@ import {
   endDownload,
   startDownload,
   errorDownload,
+  selectApi,
 } from "./index";
 
 export function* rootSaga() {
@@ -32,7 +33,6 @@ export function* watchFecthDataFromWeatherstack() {
 
 function* fetchDataFromOpenWeather(action) {
   yield put(startDownload);
-
   try {
     const data = yield call(() => {
       return fetch(
@@ -43,8 +43,7 @@ function* fetchDataFromOpenWeather(action) {
     yield put(endDownload);
     yield put(selectApi(api));
   } catch (error) {
-    console.log(action.payload);
-    yield put(errorDownload(error.message));
+    yield put(errorDownload(error.messege));
   }
 }
 
@@ -57,33 +56,37 @@ function* fetchDataFromWeatherstack(action) {
       ).then((response) => response.json());
     });
     yield put(setDataFromWeatherStackSuccess(data));
-    yield put(endDownload);
     yield put(selectApi(api));
+    yield put(endDownload);
   } catch (error) {
-    console.log(action.payload);
-    yield put(errorDownload(error.message));
+    yield put(errorDownload(error.messege));
   }
 }
 
+const getPosition = (options) => {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+};
+
 function* loadGeolocationWorker() {
   yield put(startDownload);
-  // try {
-  //   const coordinates = yield call(async () => {
-  //     const result = await navigator.geolocation.watchPosition((res) => res);
-  //     return result;
-  //   });
+  try {
+    const coordinates = yield call(async () => {
+      return getPosition();
+    });
 
-  //   console.log(coordinates);
+    console.log(coordinates);
 
     const data = yield call(() => {
       return fetch(
-        `http://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&appid=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
+        `http://api.openweathermap.org/data/2.5/weather?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&appid=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
       ).then((response) => response.json());
     });
     yield put(setDataFromOpenWeatherMapSuccess(data));
-    yield put(endDownload);
     yield put(selectApi("OpenWeatherMap"));
+    yield put(endDownload);
   } catch (error) {
-    yield put(errorDownload(error.message));
+    yield put(errorDownload(error.messege));
   }
 }

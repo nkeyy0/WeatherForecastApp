@@ -3,8 +3,10 @@ import { Button, Select, MenuItem, InputLabel } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import {
+  errorDownload,
   loadDataFromOpenWeatherMap,
   loadDataFromWeatherstack,
+  selectApi,
 } from "../actions/index";
 import { changeInputSearch } from "../actions/index";
 import { selectOnChange } from "../actions/index";
@@ -42,9 +44,12 @@ const CitySearchField = () => {
   const handleOnSubmit = (event) => {
     if (selectAPI === "OpenWeatherMap") {
       dispatch(loadDataFromOpenWeatherMap(cityInput));
+      dispatch(selectApi(api));
     } else if (selectAPI === "Weatherstack") {
       dispatch(loadDataFromWeatherstack(cityInput));
+      dispatch(selectApi(api));
     }
+    
     console.log(selectAPI);
     event.preventDefault();
   };

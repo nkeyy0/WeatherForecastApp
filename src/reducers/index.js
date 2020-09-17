@@ -67,16 +67,12 @@ const rootReducer = (state = initialState, action) => {
             return{...state, loading: action.payload};
         case 'END_DOWNLOAD':
             console.log(state);
-            return{...state, loading: action.payload};
+            return{...state, loading: action.payload, downloadError : null};
         case 'ERROR_DOWNLOAD':
             console.log(state);
             return {...state, downloadError : action.payload, loading: false };
         case 'SELECT_API':
             return{...state, api: action.payload}
-        case 'GET_ERROR' : {
-            console.log(state);
-            return {...state, downloadError: action.payload, loading: false}
-        }
         case 'SET_TIME_REQUEST': {
             return {...state, time: action.payload}
         }
