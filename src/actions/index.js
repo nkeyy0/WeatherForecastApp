@@ -1,7 +1,5 @@
 import resolve from "resolve";
 
-
-
 export const searchCity = (city) => {
   console.log("Search...");
   return {
@@ -47,17 +45,17 @@ export const setDataFromWeatherStackSuccess = (dataFromAPI) => {
   };
 };
 
-export const loadDataFromOpenWeatherMap = city => {
+export const loadDataFromOpenWeatherMap = (city) => {
   return {
     type: "LOAD_DATA_FROM_OPENWEATHERMAP",
-    payload: city
+    payload: city,
   };
 };
 
-export const loadDataFromWeatherstack = city => {
+export const loadDataFromWeatherstack = (city) => {
   return {
     type: "LOAD_DATA_FROM_WEATHERSTACK",
-    payload: city
+    payload: city,
   };
 };
 
@@ -66,8 +64,6 @@ export const loadGeolocationFromOpenWeatherMap = () => {
     type: "LOAD_GEOLOCATION_FROM_OPENWEATHERMAP",
   };
 };
-
-
 
 export const startDownload = {
   type: "START_DOWNLOAD",
@@ -90,12 +86,6 @@ export const selectApi = (api) => {
     payload: api,
   };
 };
-
-
-
-
-
-
 
 export const setTimeRequest = (time) => {
   return {

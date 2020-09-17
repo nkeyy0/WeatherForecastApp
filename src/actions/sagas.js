@@ -40,10 +40,14 @@ function* fetchDataFromOpenWeather(action) {
       ).then((response) => response.json());
     });
     yield put(setDataFromOpenWeatherMapSuccess(data));
+    yield put(selectApi("OpenWeatherMap"));
     yield put(endDownload);
-    yield put(selectApi(api));
   } catch (error) {
-    yield put(errorDownload(error.messege));
+    yield put(
+      errorDownload(
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      )
+    );
   }
 }
 
@@ -56,10 +60,14 @@ function* fetchDataFromWeatherstack(action) {
       ).then((response) => response.json());
     });
     yield put(setDataFromWeatherStackSuccess(data));
-    yield put(selectApi(api));
+    yield put(selectApi("Weatherstack"));
     yield put(endDownload);
   } catch (error) {
-    yield put(errorDownload(error.messege));
+    yield put(
+      errorDownload(
+        "Your API request failed. Please try again or contact support."
+      )
+    );
   }
 }
 

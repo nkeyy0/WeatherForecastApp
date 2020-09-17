@@ -1,0 +1,2 @@
+export const ERROR_DOWNLOAD_FROM_OPEN_WEATHER_MAP = 'Failed to load resource: the server responded with a status of 404 (Not Found)';
+export const ERROR_DOWNLOAD_FROM_WEATHERSTACK = 'Your API request failed. Please try again or contact support.';
