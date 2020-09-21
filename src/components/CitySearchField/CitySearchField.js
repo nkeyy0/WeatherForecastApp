@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Select, MenuItem, InputLabel } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
+
 import {
   errorDownload,
   loadDataFromOpenWeatherMap,
@@ -14,10 +15,8 @@ import { useState } from "react";
 import { Grid } from "@material-ui/core";
 import { useEffect } from "react";
 
-const CitySearchField = () => {
+const CitySearchField = ({api, cityName}) => {
   const dispatch = useDispatch();
-  const api = useSelector((state) => state.api);
-  const cityName = useSelector((state) => state.cityName);
   const [cityInput, cityChangeInput] = useState("");
   const [selectAPI, changeSelectAPI] = useState("");
   useEffect(() => {
@@ -43,8 +42,6 @@ const CitySearchField = () => {
       dispatch(loadDataFromWeatherstack(cityInput));
       dispatch(selectApi(api));
     }
-    
-    console.log(selectAPI);
     event.preventDefault();
   };
 

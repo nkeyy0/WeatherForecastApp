@@ -6,7 +6,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Typography, Grid, Container } from "@material-ui/core";
 import { getSunrise } from "../../convert/index";
 import { getSunset } from "../../convert/index";
-import { useSelector } from "react-redux";
+
 
 const BoxWeather = ({
   descriptionWeather,

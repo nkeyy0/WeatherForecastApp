@@ -46,7 +46,7 @@ function* fetchDataFromOpenWeather(action) {
   } catch (error) {
     yield put(
       errorDownload(
-        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        "City not found"
       )
     );
   }
@@ -66,7 +66,7 @@ function* fetchDataFromWeatherstack(action) {
   } catch (error) {
     yield put(
       errorDownload(
-        "Your API request failed. Please try again or contact support."
+        "City not found"
       )
     );
   }
