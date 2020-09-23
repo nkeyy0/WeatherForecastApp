@@ -23,9 +23,9 @@ const Navigation = () => {
         Weather
       </Typography>
     </Grid>
-    <Grid item xs = {12} sm = {1} direction = "row">
-     <Button color = "inherit">Login</Button>
-    </Grid>
+     <Grid item xs = {12} sm = {1} direction = "row">
+     <Button color = "inherit">Logout</Button>
+    </Grid> 
     </Grid>
     </Toolbar>
     
