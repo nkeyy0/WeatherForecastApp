@@ -1,19 +1,9 @@
 import React, { useState } from "react";
-import { Input, TextField, Button, Grid, Typography } from "@material-ui/core";
-import Registration from "../Registration";
+import { Input, TextField, Button, Grid, Typography} from "@material-ui/core";
 import { Link, BrowserRouter as Router, Route } from "react-router-dom";
 
-const Login = () => {
-  const [LoginInput, LoginChangeInput] = useState("");
-  const [PassInput, PassChangeInput] = useState("");
-  const handleInputChange = (event) => {
-    event.preventDefault();
-    LoginChangeInput(event.target.value);
-  };
-  const handlePassChange = (event) => {
-    event.preventDefault();
-    PassChangeInput(event.target.value);
-  };
+
+const Registration = () => {
   const handleOnSubmit = (event) => {
     event.preventDefault();
   };
@@ -28,9 +18,30 @@ const Login = () => {
       >
         <Grid item>
           <TextField
-            label="Login or Email"
+            label="First name"
             variant="outlined"
-            onChange={handleInputChange}
+            
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Surname"
+            variant="outlined"
+            
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Patronymic"
+            variant="outlined"
+            
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Email"
+            variant="outlined"
+            
           />
         </Grid>
         <Grid item>
@@ -38,7 +49,15 @@ const Login = () => {
             label="Password"
             variant="outlined"
             type="password"
-            onChange={handlePassChange}
+            
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Password confirm"
+            variant="outlined"
+            type="password"
+            
           />
         </Grid>
         <Grid item>
@@ -49,15 +68,15 @@ const Login = () => {
             type="submit"
             size="large"
           >
-            Sign In
+            Register
           </Button>
         </Grid>
         <Grid item>
-          <Link to="/registration">Create new account</Link>
+        <Link to="/login">Back to authorization</Link>
         </Grid>
       </Grid>
     </form>
   );
 };
 
-export default Login;
+export default Registration;
