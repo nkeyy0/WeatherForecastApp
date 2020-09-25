@@ -15,18 +15,30 @@ import { useState } from "react";
 import { Grid } from "@material-ui/core";
 import { useEffect } from "react";
 
-const CitySearchField = ({api, cityName}) => {
+const CitySearchField = ({ api, cityName }) => {
+  const isValid =(str) => {
+    return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
+   }
+   console.log(isValid('saffas124'))
   const dispatch = useDispatch();
-  const [cityInput, cityChangeInput] = useState("");
-  const [selectAPI, changeSelectAPI] = useState("");
+  const [cityInput, cityChangeInput] = useState({ text: "", error: false, helperText: null });
+  const [selectAPI, changeSelectAPI] = useState({ text: "", error: false, helperText: null });
   useEffect(() => {
-    cityChangeInput(cityName);
+    cityChangeInput({ text: cityName, error: false });
     changeSelectAPI(api);
   }, [cityName, api]);
 
   const handleInputChange = (event) => {
     event.preventDefault();
-    cityChangeInput(event.target.value);
+    if (event.target.value.trim() !== "") {
+      cityChangeInput({ text: event.target.value.trim(), error: false, helperText: null });
+    }
+    if(isValid(event.target.value) == false ){
+      cityChangeInput({ text: event.target.value.trim(), error: true, helperText: 'field contains invalid characters' });
+      console.log(false);
+    }
+     else cityChangeInput({ text: event.target.value.trim(), error: true, helperText: 'Empty field' });
+     console.log(event.target.value);
   };
 
   const handleSelectChange = (event) => {
@@ -50,10 +62,12 @@ const CitySearchField = ({api, cityName}) => {
       <Grid container direction="row" justify="center" spacing={4}>
         <Grid item xs={9} sm={3}>
           <TextField
+            error={cityInput.error}
             fullWidth
             placeholder="Enter city"
-            value={cityInput}
+            value={cityInput.text}
             onChange={handleInputChange}
+            helperText = {cityInput.helperText}
           />
         </Grid>
 
@@ -81,3 +95,10 @@ const CitySearchField = ({api, cityName}) => {
 };
 
 export default CitySearchField;
+
+
+const isValid =(str) => {
+  return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
+ }
+
+ console.log(isValid('asf'))

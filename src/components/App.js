@@ -28,7 +28,7 @@ const App = () => {
       <Container maxWidth="md">
         <Card>
           <CardContent>
-            <Route exact path = '/' component = {WeatherPage}/>
+            <Route exact path = '/weather' component = {WeatherPage}/>
             <Route exact path='/login' component = {Login}/>
             <Route exact path="/registration" component={Registration} />
           </CardContent>

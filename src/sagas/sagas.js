@@ -85,8 +85,6 @@ function* loadGeolocationWorker() {
       return getPosition();
     });
 
-    console.log(coordinates);
-
     const data = yield call(() => {
       return fetch(
         `http://api.openweathermap.org/data/2.5/weather?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&appid=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
