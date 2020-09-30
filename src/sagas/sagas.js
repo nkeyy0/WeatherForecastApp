@@ -1,6 +1,11 @@
 import { takeEvery, put, call, all } from "redux-saga/effects";
 import resolve from "resolve";
-import { LOAD_DATA_FROM_OPENWEATHERMAP, LOAD_DATA_FROM_WEATHERSTACK, LOAD_GEOLOCATION_FROM_OPENWEATHERMAP } from "../constants/constants";
+import {
+  LOAD_DATA_FROM_OPENWEATHERMAP,
+  LOAD_DATA_FROM_WEATHERSTACK,
+  LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
+  NEW_USER_REGISTRATION,
+} from "../constants/constants";
 import {
   setDataFromOpenWeatherMapSuccess,
   setDataFromWeatherStackSuccess,
@@ -15,14 +20,12 @@ export function* rootSaga() {
     watchFetchDataFromOpenWeatherMap(),
     watchFetchDataFromWeatherstack(),
     watchGeolocation(),
+    watchNewUserRegistration()
   ]);
 }
 
 export function* watchGeolocation() {
-  yield takeEvery(
-    LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
-    loadGeolocationWorker
-  );
+  yield takeEvery(LOAD_GEOLOCATION_FROM_OPENWEATHERMAP, loadGeolocationWorker);
 }
 export function* watchFetchDataFromOpenWeatherMap() {
   yield takeEvery(LOAD_DATA_FROM_OPENWEATHERMAP, fetchDataFromOpenWeather);
@@ -30,6 +33,10 @@ export function* watchFetchDataFromOpenWeatherMap() {
 
 export function* watchFetchDataFromWeatherstack() {
   yield takeEvery(LOAD_DATA_FROM_WEATHERSTACK, fetchDataFromWeatherstack);
+}
+
+export function* watchNewUserRegistration() {
+  yield takeEvery(NEW_USER_REGISTRATION, NewUserRegistrationWorker)
 }
 
 function* fetchDataFromOpenWeather(action) {
@@ -44,11 +51,7 @@ function* fetchDataFromOpenWeather(action) {
     yield put(selectApi("OpenWeatherMap"));
     yield put(endDownload);
   } catch (error) {
-    yield put(
-      errorDownload(
-        "City not found"
-      )
-    );
+    yield put(errorDownload("City not found"));
   }
 }
 
@@ -64,11 +67,7 @@ function* fetchDataFromWeatherstack(action) {
     yield put(selectApi("Weatherstack"));
     yield put(endDownload);
   } catch (error) {
-    yield put(
-      errorDownload(
-        "City not found"
-      )
-    );
+    yield put(errorDownload("City not found"));
   }
 }
 
@@ -94,6 +93,18 @@ function* loadGeolocationWorker() {
     yield put(selectApi("OpenWeatherMap"));
     yield put(endDownload);
   } catch (error) {
-    yield put(errorDownload('Failed to access geolocation'));
+    yield put(errorDownload("Failed to access geolocation"));
+  }
+}
+
+function* NewUserRegistrationWorker(action) {
+  try {
+    yield put(startDownload);
+    fetch('http://localhost:5000/register', {method: 'POST', cache: 'no-cache',  body: JSON.stringify(action.payload)}).then(resp => resp.status)
+  } catch (error) {
+    yield put(errorDownload("Failed to access geolocation"));
+  }
+  finally{
+    yield put(endDownload);
   }
 }

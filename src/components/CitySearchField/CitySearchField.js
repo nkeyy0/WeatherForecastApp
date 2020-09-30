@@ -33,10 +33,6 @@ const CitySearchField = ({ api, cityName }) => {
     if (event.target.value.trim() !== "") {
       cityChangeInput({ text: event.target.value.trim(), error: false, helperText: null });
     }
-    if(isValid(event.target.value) == false ){
-      cityChangeInput({ text: event.target.value.trim(), error: true, helperText: 'field contains invalid characters' });
-      console.log(false);
-    }
      else cityChangeInput({ text: event.target.value.trim(), error: true, helperText: 'Empty field' });
      console.log(event.target.value);
   };

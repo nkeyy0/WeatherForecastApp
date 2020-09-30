@@ -12,6 +12,7 @@ import {
   SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS,
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   START_DOWNLOAD,
+  NEW_USER_REGISTRATION
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -100,3 +101,10 @@ export const selectApi = (api) => {
     payload: api,
   };
 };
+
+export const newUserRegistration = (body) => {
+  return{
+    type: NEW_USER_REGISTRATION,
+    payload: body
+  }
+}
