@@ -20,7 +20,7 @@ export function* rootSaga() {
     watchFetchDataFromOpenWeatherMap(),
     watchFetchDataFromWeatherstack(),
     watchGeolocation(),
-    watchNewUserRegistration()
+    watchNewUserRegistration(),
   ]);
 }
 
@@ -36,7 +36,7 @@ export function* watchFetchDataFromWeatherstack() {
 }
 
 export function* watchNewUserRegistration() {
-  yield takeEvery(NEW_USER_REGISTRATION, NewUserRegistrationWorker)
+  yield takeEvery(NEW_USER_REGISTRATION, NewUserRegistrationWorker);
 }
 
 function* fetchDataFromOpenWeather(action) {
@@ -91,20 +91,30 @@ function* loadGeolocationWorker() {
     });
     yield put(setDataFromOpenWeatherMapSuccess(data));
     yield put(selectApi("OpenWeatherMap"));
-    yield put(endDownload);
   } catch (error) {
     yield put(errorDownload("Failed to access geolocation"));
+  } finally {
+    yield put(endDownload);
   }
 }
 
 function* NewUserRegistrationWorker(action) {
   try {
     yield put(startDownload);
-    fetch('http://localhost:5000/register', {method: 'POST', cache: 'no-cache',  body: JSON.stringify(action.payload)}).then(resp => resp.status)
+    const data = fetch("http://localhost:5000/register", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Access-Control-Allow-Origin": "*",
+      },
+      referrerPolicy: 'no-referrer', 
+      body: JSON.stringify(action.payload),
+    }).then(res => res.json());
   } catch (error) {
     yield put(errorDownload("Failed to access geolocation"));
-  }
-  finally{
+  } finally {
     yield put(endDownload);
   }
 }
