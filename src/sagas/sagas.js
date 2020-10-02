@@ -106,12 +106,14 @@ function* NewUserRegistrationWorker(action) {
       mode: "cors",
       cache: "no-cache",
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json;charset=utf-8',
         "Access-Control-Allow-Origin": "*",
       },
       referrerPolicy: 'no-referrer', 
       body: JSON.stringify(action.payload),
-    }).then(res => res.json());
+    }).then(res => res.status);
+     console.log(data);
   } catch (error) {
     yield put(errorDownload("Failed to access geolocation"));
   } finally {
