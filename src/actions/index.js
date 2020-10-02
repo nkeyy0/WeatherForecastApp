@@ -12,7 +12,7 @@ import {
   SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS,
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   START_DOWNLOAD,
-  NEW_USER_REGISTRATION
+  NEW_USER_REGISTRATION, NEW_USER_REGISTRATION_FAILED
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -106,5 +106,12 @@ export const newUserRegistration = (body) => {
   return{
     type: NEW_USER_REGISTRATION,
     payload: body
+  }
+}
+
+export const newUserRegistrationFailed = (err) => {
+  return{
+    type: NEW_USER_REGISTRATION_FAILED,
+    payload: err
   }
 }

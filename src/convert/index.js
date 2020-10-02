@@ -16,3 +16,34 @@ export const getSunset = (sunset) => {
     date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
   }`;
 };
+
+export const ErrorsCheck = (errors) => {
+  const errorsArray = Object.values(errors);
+  for (let i = 0; i < errorsArray.length; i++) {
+    if (errorsArray[i]) {
+      return true;
+    }
+  }
+};
+
+export const ErrorDescription = (errorsDescriptionArray) => {
+  const descriptionError = Object.values(errorsDescriptionArray);
+  console.log(descriptionError);
+  for (let i = 0; i < descriptionError.length; i++) {
+    if (descriptionError[i]) {
+      return descriptionError[i];
+    }
+  }
+};
+
+const errorDescription = {
+  name: null,
+  surname: null,
+  patronymic: null,
+  email: "afs",
+  city: null,
+  password: "asfafs",
+  passwordConfirm: null,
+};
+
+console.log(ErrorDescription(errorDescription));

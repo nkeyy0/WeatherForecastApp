@@ -10,6 +10,7 @@ import {
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   START_DOWNLOAD,
   ERROR_DOWNLOAD,
+  NEW_USER_REGISTRATION_FAILED,
 } from "../constants/constants";
 
 const initialState = {
@@ -31,6 +32,7 @@ const initialState = {
   geoLatitude: null,
   geoLongitude: null,
   time: null,
+  registrationErrorDescription: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -84,6 +86,9 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, downloadError: action.payload, loading: false };
     case SELECT_API:
       return { ...state, api: action.payload };
+    case NEW_USER_REGISTRATION_FAILED:
+      console.log(state);
+      return { ...state, registrationErrorDescription: action.payload };
     default:
       return state;
   }
