@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { Input, TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link, BrowserRouter as Router, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { newUserRegistration, newUserRegistrationFailed } from "../../actions";
+import {
+  newUserRegistration,
+  newUserRegistrationFailed,
+  newUserRegistrationSuccess,
+} from "../../actions";
 import { v4 as uuidv4 } from "uuid";
 import { ErrorsCheck } from "../../convert/index";
 import { ErrorDescription } from "../../convert/index";
+import { NEW_USER_REGISTRATION_STATUS } from "../../constants/constants";
 
-const Registration = ({ registrationErrorDescription }) => {
+const Registration = ({
+  registrationErrorDescription,
+  registrationUserSuccess,
+}) => {
   const dispatch = useDispatch();
   const [FirstNameInput, FirstNameChangeInput] = useState({
     text: "",
@@ -67,8 +75,9 @@ const Registration = ({ registrationErrorDescription }) => {
   });
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    if (ErrorsCheck(FormValidate.error)) {
+    if (ErrorsCheck(FormValidate.error) && !registrationUserSuccess) {
       const errRegistration = ErrorDescription(FormValidate.errorDescription);
+      dispatch(newUserRegistrationSuccess(null));
       dispatch(newUserRegistrationFailed(errRegistration));
     } else {
       dispatch(newUserRegistration(regInfo));
@@ -80,7 +89,7 @@ const Registration = ({ registrationErrorDescription }) => {
           email: false,
           city: false,
           password: false,
-          passwordConfirm: false
+          passwordConfirm: false,
         },
         errorDescription: {
           name: null,
@@ -93,6 +102,7 @@ const Registration = ({ registrationErrorDescription }) => {
         },
       });
       dispatch(newUserRegistrationFailed(null));
+      dispatch(newUserRegistrationSuccess(NEW_USER_REGISTRATION_STATUS));
     }
   };
   const handleFirstName = (event) => {
@@ -539,7 +549,6 @@ const Registration = ({ registrationErrorDescription }) => {
     password: PasswordInput.text,
     passConf: PasswordConfirmInput.text,
   };
-  // console.log(regInfo);
   return (
     <form onSubmit={handleOnSubmit}>
       <Grid
@@ -553,6 +562,14 @@ const Registration = ({ registrationErrorDescription }) => {
           <Grid item>
             <Typography color="error" variant="h5">
               {registrationErrorDescription}
+            </Typography>
+          </Grid>
+        )}
+
+        {registrationUserSuccess && (
+          <Grid item>
+            <Typography color="textSecondary" variant="h5">
+              {registrationUserSuccess}
             </Typography>
           </Grid>
         )}

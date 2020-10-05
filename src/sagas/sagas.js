@@ -13,6 +13,8 @@ import {
   startDownload,
   errorDownload,
   selectApi,
+  newUserRegistrationFailed,
+  newUserRegistrationSuccess,
 } from "../actions/index";
 
 export function* rootSaga() {
@@ -101,21 +103,30 @@ function* loadGeolocationWorker() {
 function* NewUserRegistrationWorker(action) {
   try {
     yield put(startDownload);
-    const data = fetch("http://localhost:5000/register", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=utf-8',
-        "Access-Control-Allow-Origin": "*",
-      },
-      referrerPolicy: 'no-referrer', 
-      body: JSON.stringify(action.payload),
-    }).then(res => res.status);
-     console.log(data);
+    const data = yield call(() => {
+      return fetch("http://localhost:5000/register", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(action.payload),
+      })
+        .then(res => res.status)
+    }) 
+      if(data === 400) { 
+        throw new Error();
+      }
+      else {
+        yield put(newUserRegistrationFailed(null))
+      }
   } catch (error) {
-    yield put(errorDownload("Failed to access geolocation"));
+    yield put(newUserRegistrationSuccess(null))
+    yield put(newUserRegistrationFailed("User with this email already exists"));
   } finally {
     yield put(endDownload);
   }

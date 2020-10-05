@@ -12,7 +12,9 @@ import {
   SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS,
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   START_DOWNLOAD,
-  NEW_USER_REGISTRATION, NEW_USER_REGISTRATION_FAILED
+  NEW_USER_REGISTRATION,
+  NEW_USER_REGISTRATION_FAILED,
+  NEW_USER_REGISTRATION_SUCCESS,
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -103,15 +105,22 @@ export const selectApi = (api) => {
 };
 
 export const newUserRegistration = (body) => {
-  return{
+  return {
     type: NEW_USER_REGISTRATION,
-    payload: body
-  }
-}
+    payload: body,
+  };
+};
 
 export const newUserRegistrationFailed = (err) => {
-  return{
+  return {
     type: NEW_USER_REGISTRATION_FAILED,
-    payload: err
-  }
-}
+    payload: err,
+  };
+};
+
+export const newUserRegistrationSuccess = (status) => {
+  return {
+    type: NEW_USER_REGISTRATION_SUCCESS,
+    payload: status,
+  };
+};
