@@ -12,6 +12,8 @@ import {
   ERROR_DOWNLOAD,
   NEW_USER_REGISTRATION_FAILED,
   NEW_USER_REGISTRATION_SUCCESS,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAILED,
 } from "../constants/constants";
 
 const initialState = {
@@ -35,6 +37,9 @@ const initialState = {
   time: null,
   registrationErrorDescription: null,
   registrationUserSuccess: null,
+  isLogin: false,
+  user: null,
+  errorLogin: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -93,6 +98,19 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, registrationErrorDescription: action.payload };
     case NEW_USER_REGISTRATION_SUCCESS:
       return { ...state, registrationUserSuccess: action.payload };
+    case USER_LOGIN_SUCCESS: {
+      console.log('success');
+      return { ...state, isLogin: true, user: action.payload, errorLogin: null };
+    }
+    case USER_LOGIN_FAILED: {
+      console.log('failed');
+      return {
+        ...state,
+        isLogin: false,
+        user: null,
+        errorLogin: action.payload,
+      };
+    }
     default:
       return state;
   }

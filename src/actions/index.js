@@ -15,6 +15,9 @@ import {
   NEW_USER_REGISTRATION,
   NEW_USER_REGISTRATION_FAILED,
   NEW_USER_REGISTRATION_SUCCESS,
+  USER_LOGIN,
+  USER_LOGIN_FAILED,
+  USER_LOGIN_SUCCESS,
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -108,6 +111,27 @@ export const newUserRegistration = (body) => {
   return {
     type: NEW_USER_REGISTRATION,
     payload: body,
+  };
+};
+
+export const UserLogin = (body) => {
+  return {
+    type: USER_LOGIN,
+    payload: body,
+  };
+};
+
+export const UserLoginFailed = (err) => {
+  return {
+    type: USER_LOGIN_FAILED,
+    payload: err,
+  };
+};
+
+export const UserLoginSuccess = (userInfo) => {
+  return {
+    type: USER_LOGIN_SUCCESS,
+    payload: userInfo,
   };
 };
 

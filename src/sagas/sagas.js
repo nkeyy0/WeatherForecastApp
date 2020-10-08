@@ -1,10 +1,11 @@
 import { takeEvery, put, call, all } from "redux-saga/effects";
-import resolve from "resolve";
+import jwt_decode from "jwt-decode";
 import {
   LOAD_DATA_FROM_OPENWEATHERMAP,
   LOAD_DATA_FROM_WEATHERSTACK,
   LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
   NEW_USER_REGISTRATION,
+  USER_LOGIN,
 } from "../constants/constants";
 import {
   setDataFromOpenWeatherMapSuccess,
@@ -15,6 +16,9 @@ import {
   selectApi,
   newUserRegistrationFailed,
   newUserRegistrationSuccess,
+  UserLogin,
+  UserLoginFailed,
+  UserLoginSuccess,
 } from "../actions/index";
 
 export function* rootSaga() {
@@ -23,6 +27,7 @@ export function* rootSaga() {
     watchFetchDataFromWeatherstack(),
     watchGeolocation(),
     watchNewUserRegistration(),
+    watchUserLogin(),
   ]);
 }
 
@@ -39,6 +44,10 @@ export function* watchFetchDataFromWeatherstack() {
 
 export function* watchNewUserRegistration() {
   yield takeEvery(NEW_USER_REGISTRATION, NewUserRegistrationWorker);
+}
+
+export function* watchUserLogin() {
+  yield takeEvery(USER_LOGIN, UserLoginWorker);
 }
 
 function* fetchDataFromOpenWeather(action) {
@@ -115,18 +124,68 @@ function* NewUserRegistrationWorker(action) {
         },
         referrerPolicy: "no-referrer",
         body: JSON.stringify(action.payload),
-      })
-        .then(res => res.status)
-    }) 
-      if(data === 400) { 
-        throw new Error();
-      }
-      else {
-        yield put(newUserRegistrationFailed(null))
-      }
+      }).then((res) => res.status);
+    });
+    if (data === 400) {
+      throw new Error();
+    } else {
+      yield put(newUserRegistrationFailed(null));
+    }
   } catch (error) {
-    yield put(newUserRegistrationSuccess(null))
+    yield put(newUserRegistrationSuccess(null));
     yield put(newUserRegistrationFailed("User with this email already exists"));
+  } finally {
+    yield put(endDownload);
+  }
+}
+
+function* UserLoginWorker(action) {
+  try {
+    yield put(startDownload);
+    const data = yield call(() => {
+      return fetch("http://localhost:5000/login", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(action.payload),
+      }).then((res) => {
+        const token = res.json().then((res) => {
+          const token = res.token;
+          console.log(token);
+          localStorage.setItem("jwtToken", token);
+        });
+        return res.status;
+      });
+    });
+    if (data === 401) {
+      const error = new Error();
+      error.message = "Incorrect password. Try it again";
+      throw error;
+    }
+    if (data === 404) {
+      const error = new Error();
+      error.message = "User with this email was not found";
+      throw error;
+    }
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      const decodedUserInfo = jwt_decode(token);
+      const UserInfo = {
+        name: decodedUserInfo.name,
+        surname: decodedUserInfo.surname,
+        patronymic: decodedUserInfo.patronymic,
+      };
+
+      yield put(UserLoginSuccess(UserInfo));
+    }
+  } catch (error) {
+    yield put(UserLoginFailed(error.message));
   } finally {
     yield put(endDownload);
   }
