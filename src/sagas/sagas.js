@@ -35,7 +35,7 @@ export function* watchGeolocation() {
   yield takeEvery(LOAD_GEOLOCATION_FROM_OPENWEATHERMAP, loadGeolocationWorker);
 }
 export function* watchFetchDataFromOpenWeatherMap() {
-  yield takeEvery(LOAD_DATA_FROM_OPENWEATHERMAP, fetchDataFromOpenWeather);
+  yield takeEvery(LOAD_DATA_FROM_OPENWEATHERMAP, getDataFromOpenWeather);
 }
 
 export function* watchFetchDataFromWeatherstack() {
@@ -50,19 +50,48 @@ export function* watchUserLogin() {
   yield takeEvery(USER_LOGIN, UserLoginWorker);
 }
 
-function* fetchDataFromOpenWeather(action) {
+// function* fetchDataFromOpenWeather(action) {
+//   yield put(startDownload);
+//   try {
+//     const data = yield call(() => {
+//       return fetch(
+//         `http://api.openweathermap.org/data/2.5/weather?q=${action.payload}&APPID=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
+//       ).then((response) => response.json());
+//     });
+//     yield put(setDataFromOpenWeatherMapSuccess(data));
+//     yield put(selectApi("OpenWeatherMap"));
+//     yield put(endDownload);
+//   } catch (error) {
+//     yield put(errorDownload("City not found"));
+//   }
+// }
+
+function* getDataFromOpenWeather(action) {
   yield put(startDownload);
   try {
-    const data = yield call(() => {
-      return fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${action.payload}&APPID=${process.env.API_KEY_FROM_OPEN_WEATHER}&units=metric`
-      ).then((response) => response.json());
-    });
-    yield put(setDataFromOpenWeatherMapSuccess(data));
+      const data = yield call(() => {
+        return fetch("http://localhost:5000/getWeatherInfoFromOpenWeatherMap", {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;charset=utf-8",
+            "Access-Control-Allow-Origin": "*",
+          },
+          referrerPolicy: "no-referrer",
+          body: JSON.stringify(action.payload),
+        }).then((res) => res.json())
+        });
+        console.log(data.dataResponse);
+    yield put(setDataFromOpenWeatherMapSuccess(data.dataResponse));
     yield put(selectApi("OpenWeatherMap"));
-    yield put(endDownload);
+    
   } catch (error) {
     yield put(errorDownload("City not found"));
+  }
+  finally{
+    yield put(endDownload);
   }
 }
 
@@ -154,15 +183,15 @@ function* UserLoginWorker(action) {
         },
         referrerPolicy: "no-referrer",
         body: JSON.stringify(action.payload),
-      }).then((res) => {
-        const token = res.json().then((res) => {
-          const token = res.token;
-          console.log(token);
-          localStorage.setItem("jwtToken", token);
-        });
+      }).then(async (res) => {
+        const tokenPromise = await res.json();
+        const token = tokenPromise.token;
+        console.log(token);
+        localStorage.setItem("jwtToken", token);
         return res.status;
       });
     });
+
     if (data === 401) {
       const error = new Error();
       error.message = "Incorrect password. Try it again";

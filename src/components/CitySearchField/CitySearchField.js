@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Grid } from "@material-ui/core";
 import { useEffect } from "react";
 
-const CitySearchField = ({ api, cityName }) => {
+const CitySearchField = ({ api, cityName, email }) => {
   const isValid =(str) => {
     return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
    }
@@ -44,10 +44,10 @@ const CitySearchField = ({ api, cityName }) => {
 
   const handleOnSubmit = (event) => {
     if (selectAPI === "OpenWeatherMap") {
-      dispatch(loadDataFromOpenWeatherMap(cityInput));
+      dispatch(loadDataFromOpenWeatherMap({city:cityInput.text, email: email}));
       dispatch(selectApi(api));
     } else if (selectAPI === "Weatherstack") {
-      dispatch(loadDataFromWeatherstack(cityInput));
+      dispatch(loadDataFromWeatherstack(cityInput.text));
       dispatch(selectApi(api));
     }
     event.preventDefault();

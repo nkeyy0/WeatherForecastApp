@@ -14,6 +14,8 @@ import {
   NEW_USER_REGISTRATION_SUCCESS,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAILED,
+  LOGOUT_USER,
+  SET_USER_EMAIL,
 } from "../constants/constants";
 
 const initialState = {
@@ -40,6 +42,7 @@ const initialState = {
   isLogin: false,
   user: null,
   errorLogin: null,
+  email: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -99,16 +102,34 @@ const rootReducer = (state = initialState, action) => {
     case NEW_USER_REGISTRATION_SUCCESS:
       return { ...state, registrationUserSuccess: action.payload };
     case USER_LOGIN_SUCCESS: {
-      console.log('success');
-      return { ...state, isLogin: true, user: action.payload, errorLogin: null };
+      console.log("success");
+      return {
+        ...state,
+        isLogin: true,
+        user: action.payload,
+        errorLogin: null,
+      };
     }
     case USER_LOGIN_FAILED: {
-      console.log('failed');
+      console.log("failed");
       return {
         ...state,
         isLogin: false,
         user: null,
         errorLogin: action.payload,
+      };
+    }
+    case LOGOUT_USER: {
+      return {
+        ...state,
+        isLogin: false,
+        user: null,
+      };
+    }
+    case SET_USER_EMAIL: {
+      return {
+        ...state,
+        email: action.payload
       };
     }
     default:

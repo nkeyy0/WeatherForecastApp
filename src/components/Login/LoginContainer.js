@@ -3,7 +3,8 @@ import Login from "./Login";
 
 
 const mapStateToProps = (state) => ({
-  errorLogin : state.errorLogin
+  errorLogin : state.errorLogin,
+  isLogin : state.isLogin
 });
 
 export default connect(mapStateToProps)(Login);

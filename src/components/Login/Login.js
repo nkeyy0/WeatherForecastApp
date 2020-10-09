@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Input, TextField, Button, Grid, Typography } from "@material-ui/core";
 import Registration from "../Registration";
-import { Link, BrowserRouter as Router, Route } from "react-router-dom";
+import { Link, BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { UserLogin, UserLoginFailed, UserLoginSuccess } from "../../actions";
+import { setUserEmail, UserLogin, UserLoginFailed, UserLoginSuccess } from "../../actions";
 import jwt_decode from "jwt-decode";
 // var decoded = jwt_decode(token);
 
-const Login = ({ errorLogin }) => {
+const Login = ({ errorLogin, isLogin }) => {
   const dispatch = useDispatch();
   const [LoginInput, LoginChangeInput] = useState("");
   const [PassInput, PassChangeInput] = useState("");
@@ -21,12 +21,16 @@ const Login = ({ errorLogin }) => {
   };
   const handleOnSubmit = (event) => {
     event.preventDefault();
+    dispatch(setUserEmail(LoginInput));
     dispatch(UserLogin(LoginInfo));
   };
   const LoginInfo = {
     email: LoginInput,
     password: PassInput,
   };
+  if(isLogin) {
+    return <Redirect to = "/weather" />
+  }
   return (
     <form onSubmit={handleOnSubmit}>
       <Grid

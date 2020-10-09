@@ -18,6 +18,8 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAILED,
   USER_LOGIN_SUCCESS,
+  LOGOUT_USER,
+  SET_USER_EMAIL
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -128,6 +130,13 @@ export const UserLoginFailed = (err) => {
   };
 };
 
+export const LogoutUser = () => {
+  return {
+    type: LOGOUT_USER,
+    payload: false
+  }
+}
+
 export const UserLoginSuccess = (userInfo) => {
   return {
     type: USER_LOGIN_SUCCESS,
@@ -148,3 +157,10 @@ export const newUserRegistrationSuccess = (status) => {
     payload: status,
   };
 };
+
+export const setUserEmail = (email) => {
+  return {
+    type: SET_USER_EMAIL,
+    payload: email
+  }
+}

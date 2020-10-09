@@ -665,7 +665,7 @@ const Registration = ({
           {/* </Link> */}
         </Grid>
         <Grid item>
-          <Link to="/login">Back to authorization</Link>
+          <Link to="/">Back to authorization</Link>
         </Grid>
       </Grid>
     </form>
