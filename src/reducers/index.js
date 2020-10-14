@@ -98,7 +98,7 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, api: action.payload };
     case NEW_USER_REGISTRATION_FAILED:
       console.log(state);
-      return { ...state, registrationErrorDescription: action.payload };
+      return { ...state, registrationErrorDescription: action.payload};
     case NEW_USER_REGISTRATION_SUCCESS:
       return { ...state, registrationUserSuccess: action.payload };
     case USER_LOGIN_SUCCESS: {

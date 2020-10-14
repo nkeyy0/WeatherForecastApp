@@ -53,6 +53,7 @@ const Registration = ({
     helperText: null,
     label: "Password confirm",
   });
+
   const [FormValidate, FormValidateChange] = useState({
     error: {
       name: false,
@@ -75,34 +76,42 @@ const Registration = ({
   });
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    if (ErrorsCheck(FormValidate.error) && !registrationUserSuccess) {
+    
+    if (ErrorsCheck(FormValidate.error)) {
       const errRegistration = ErrorDescription(FormValidate.errorDescription);
       dispatch(newUserRegistrationSuccess(null));
       dispatch(newUserRegistrationFailed(errRegistration));
     } else {
       dispatch(newUserRegistration(regInfo));
-      FormValidateChange({
-        error: {
-          name: false,
-          surname: false,
-          patronymic: false,
-          email: false,
-          city: false,
-          password: false,
-          passwordConfirm: false,
-        },
-        errorDescription: {
-          name: null,
-          surname: null,
-          patronymic: null,
-          email: null,
-          city: null,
-          password: null,
-          passwordConfirm: null,
-        },
-      });
-      dispatch(newUserRegistrationFailed(null));
-      dispatch(newUserRegistrationSuccess(NEW_USER_REGISTRATION_STATUS));
+      // if(registrationErrorDescription){
+      //   
+      // }
+      // else {
+        FormValidateChange({
+          error: {
+            name: false,
+            surname: false,
+            patronymic: false,
+            email: false,
+            city: false,
+            password: false,
+            passwordConfirm: false,
+          },
+          errorDescription: {
+            name: null,
+            surname: null,
+            patronymic: null,
+            email: null,
+            city: null,
+            password: null,
+            passwordConfirm: null,
+          },
+        });
+        dispatch(newUserRegistrationFailed(null));
+        
+        
+      // }
+      
     }
   };
   const handleFirstName = (event) => {
@@ -540,14 +549,12 @@ const Registration = ({
     }
   };
   const regInfo = {
-    id: uuidv4(),
     name: FirstNameInput.text,
     surname: SurnameInput.text,
     patronymic: PatronymicInput.text,
     email: EmailInput.text,
     city: CityInput.text,
     password: PasswordInput.text,
-    passConf: PasswordConfirmInput.text,
   };
   return (
     <form onSubmit={handleOnSubmit}>
@@ -652,7 +659,6 @@ const Registration = ({
           />
         </Grid>
         <Grid item>
-          {/* <Link to="/login" style = {{textDecoration: 'none'}}> */}
           <Button
             fullWidth
             variant="contained"

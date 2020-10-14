@@ -36,14 +36,8 @@ export const ErrorDescription = (errorsDescriptionArray) => {
   }
 };
 
-const errorDescription = {
-  name: null,
-  surname: null,
-  patronymic: null,
-  email: "afs",
-  city: null,
-  password: "asfafs",
-  passwordConfirm: null,
-};
+export const GetFirstLetterToUpperCase = (str) => str.slice(0, 1).toUpperCase();
 
-console.log(ErrorDescription(errorDescription));
+console.log(GetFirstLetterToUpperCase('saffasfsa'));
+
+

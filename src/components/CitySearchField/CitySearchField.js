@@ -19,7 +19,6 @@ const CitySearchField = ({ api, cityName, email }) => {
   const isValid =(str) => {
     return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
    }
-   console.log(isValid('saffas124'))
   const dispatch = useDispatch();
   const [cityInput, cityChangeInput] = useState({ text: "", error: false, helperText: null });
   const [selectAPI, changeSelectAPI] = useState({ text: "", error: false, helperText: null });

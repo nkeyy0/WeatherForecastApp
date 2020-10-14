@@ -19,7 +19,8 @@ import {
   USER_LOGIN_FAILED,
   USER_LOGIN_SUCCESS,
   LOGOUT_USER,
-  SET_USER_EMAIL
+  SET_USER_EMAIL,
+  WEATHER_INFO_AFTER_LOGIN
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -119,6 +120,13 @@ export const newUserRegistration = (body) => {
 export const UserLogin = (body) => {
   return {
     type: USER_LOGIN,
+    payload: body,
+  };
+};
+
+export const WeatherInfoAfterLogin = (body) => {
+  return {
+    type: WEATHER_INFO_AFTER_LOGIN,
     payload: body,
   };
 };
