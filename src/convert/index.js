@@ -36,8 +36,11 @@ export const ErrorDescription = (errorsDescriptionArray) => {
   }
 };
 
-export const GetFirstLetterToUpperCase = (str) => str.slice(0, 1).toUpperCase();
 
-console.log(GetFirstLetterToUpperCase('saffasfsa'));
-
+export const GetAvatarLetters = (str) => {
+  const strArray = str.split(" ");
+  const nameFirstLetter = strArray[0].slice(0, 1).toUpperCase();
+  const surnameFirstLetter = strArray[1].slice(0, 1).toUpperCase();
+  return `${nameFirstLetter}${surnameFirstLetter}`;
+};
 

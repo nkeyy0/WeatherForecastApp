@@ -68,6 +68,7 @@ const rootReducer = (state = initialState, action) => {
         sunset: action.payload.sys.sunset,
         weatherImage: `http://openweathermap.org/img/w/${action.payload.weather[0].icon}.png`,
         downloadError: null,
+        api: 'OpenWeatherMap'
       };
 
     case SET_DATA_FROM_WEATHER_STACK_SUCCESS:
@@ -85,6 +86,7 @@ const rootReducer = (state = initialState, action) => {
         sunrise: null,
         sunset: null,
         downloadError: null,
+        api: 'Weatherstack'
       };
     case START_DOWNLOAD:
       return { ...state, loading: action.payload };

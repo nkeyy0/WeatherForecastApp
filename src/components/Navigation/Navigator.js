@@ -11,7 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Avatar } from "@material-ui/core";
 import { LogoutUser } from "../../actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { GetFirstLetterToUpperCase } from "../../convert/index";
+import { GetAvatarLetters } from "../../convert/index";
 
 const Navigation = ({ isLogin, user }) => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const Navigation = ({ isLogin, user }) => {
       <AppBar position="static" color="secondary">
         <Toolbar>
           <Grid container direction="row" spacing={1} alignItems = 'baseline'>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={7}>
               <Typography variant="h4">Weather</Typography>
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -51,12 +51,11 @@ const Navigation = ({ isLogin, user }) => {
                 {user}
               </Typography>
             </Grid>
-            {/* <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={1}>
               <Avatar>
-                {GetFirstLetterToUpperCase(user.name)}
-                {GetFirstLetterToUpperCase(user.surname)}
+                {GetAvatarLetters(user)}
               </Avatar>
-              </Grid> */}
+              </Grid>
             <Grid item xs={12} sm={1}>
               <Button color="textPrimary" onClick={handleOnClickLogout}>
                 Logout

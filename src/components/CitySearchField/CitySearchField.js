@@ -39,6 +39,7 @@ const CitySearchField = ({ api, cityName, email }) => {
   const handleSelectChange = (event) => {
     event.preventDefault();
     changeSelectAPI(event.target.value);
+    dispatch(selectApi(event.target.value));
   };
 
   const handleOnSubmit = (event) => {
@@ -46,7 +47,7 @@ const CitySearchField = ({ api, cityName, email }) => {
       dispatch(loadDataFromOpenWeatherMap({city:cityInput.text, email: email}));
       dispatch(selectApi(api));
     } else if (selectAPI === "Weatherstack") {
-      dispatch(loadDataFromWeatherstack(cityInput.text));
+      dispatch(loadDataFromWeatherstack({city: cityInput.text, email: email}));
       dispatch(selectApi(api));
     }
     event.preventDefault();
@@ -67,7 +68,7 @@ const CitySearchField = ({ api, cityName, email }) => {
         </Grid>
 
         <Grid item xs={9} sm={3}>
-          <Select value={selectAPI} fullWidth onChange={handleSelectChange}>
+          <Select value={api} fullWidth onChange={handleSelectChange}>
             <MenuItem value="OpenWeatherMap">OpenWeatherMap</MenuItem>
             <MenuItem value="Weatherstack">Weatherstack</MenuItem>
           </Select>

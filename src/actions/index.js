@@ -20,7 +20,8 @@ import {
   USER_LOGIN_SUCCESS,
   LOGOUT_USER,
   SET_USER_EMAIL,
-  WEATHER_INFO_AFTER_LOGIN
+  WEATHER_INFO_AFTER_LOGIN,
+  SET_WEATHER_INFO_SUCCESS
 } from "../constants/constants";
 
 export const searchCity = (city) => {
