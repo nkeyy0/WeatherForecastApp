@@ -255,7 +255,8 @@ function* UserLoginWorker(action) {
     yield put(WeatherInfoAfterLogin({ email: action.payload.email }));
   } catch (error) {
     yield put(UserLoginFailed(error.message));
-  } finally {
-    yield put(endDownload);
   }
+  // } finally {
+  //   yield put(endDownload);
+  // }
 }

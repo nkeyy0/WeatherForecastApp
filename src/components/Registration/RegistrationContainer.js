@@ -3,8 +3,8 @@ import Registration from "./Registration";
 
 
 const mapStateToProps = (state) => ({
-  registrationErrorDescription: state.registrationErrorDescription,
-  registrationUserSuccess: state.registrationUserSuccess
+  registrationErrorDescription: state.registration.registrationErrorDescription,
+  registrationUserSuccess: state.registration.registrationUserSuccess
 });
 
 export default connect(mapStateToProps)(Registration);

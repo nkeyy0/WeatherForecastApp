@@ -19,10 +19,10 @@ import {
 
 const App = () => {
   const dispatch = useDispatch();
-  const isLogin = useSelector(state => state.isLogin);
-  if (!localStorage.getItem("persist:root") && isLogin) {
-    dispatch(loadGeolocationFromOpenWeatherMap());
-  }
+  const isLogin = useSelector(state => state.auth.isLogin);
+  // if (!localStorage.getItem("persist:root") && isLogin) {
+  //   dispatch(loadGeolocationFromOpenWeatherMap());
+  // }
 
   return (
     <Router>

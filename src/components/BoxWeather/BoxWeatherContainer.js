@@ -3,17 +3,17 @@ import { default as BoxWeather } from "./BoxWeather";
 
 
 const mapStateToProps = (state) => ({
-  descriptionWeather: state.descriptionWeather,
-  cityName: state.cityName,
-  countryName: state.countryName,
-  temperature: state.temperature,
-  humidity: state.humidity,
-  windSpeed: state.windSpeed,
-  visibility: state.visibility,
-  pressure: state.pressure,
-  sunrise: state.sunrise,
-  sunset: state.sunset,
-  weatherImage: state.weatherImage,
+  descriptionWeather: state.weatherInfo.descriptionWeather,
+  cityName: state.weatherInfo.cityName,
+  countryName: state.weatherInfo.countryName,
+  temperature: state.weatherInfo.temperature,
+  humidity: state.weatherInfo.humidity,
+  windSpeed: state.weatherInfo.windSpeed,
+  visibility: state.weatherInfo.visibility,
+  pressure: state.weatherInfo.pressure,
+  sunrise: state.weatherInfo.sunrise,
+  sunset: state.weatherInfo.sunset,
+  weatherImage: state.weatherInfo.weatherImage,
 });
 
 export default connect(mapStateToProps)(BoxWeather);

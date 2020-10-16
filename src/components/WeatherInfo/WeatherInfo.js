@@ -11,7 +11,7 @@ const WeatherInfo = ({loading, downloadError}) => {
         {downloadError}
       </Typography>
     );
-  else if (loading)
+   if (loading)
     return (
       <Grid container justify="center">
         <CircularProgress size={60} />
