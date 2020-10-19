@@ -1,4 +1,4 @@
-import { START_DOWNLOAD, END_DOWNLOAD, ERROR_DOWNLOAD } from "../constants/constants";
+import { START_DOWNLOAD, END_DOWNLOAD, ERROR_DOWNLOAD, SUCCESS_DOWNLOAD } from "../constants/constants";
 
 const initialState = {
   loading: false,
@@ -11,10 +11,12 @@ const download = (state = initialState, action) => {
       return { ...state, loading: action.payload };
     case END_DOWNLOAD:
       console.log(state);
-      return { ...state, loading: action.payload, downloadError: null };
+      return { ...state, loading: action.payload};
     case ERROR_DOWNLOAD:
       console.log(state);
-      return { ...state, downloadError: action.payload, loading: false };
+      return { ...state, downloadError: action.payload};
+    case SUCCESS_DOWNLOAD:
+      return{...state, downloadError: action.payload}
     default:
       return state;
   }

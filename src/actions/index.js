@@ -21,7 +21,8 @@ import {
   LOGOUT_USER,
   SET_USER_EMAIL,
   WEATHER_INFO_AFTER_LOGIN,
-  SET_WEATHER_INFO_SUCCESS
+  SET_WEATHER_INFO_SUCCESS,
+  SUCCESS_DOWNLOAD,
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -31,6 +32,7 @@ export const searchCity = (city) => {
     payload: city,
   };
 };
+
 
 export const displayTemperature = (temperature) => {
   return {
@@ -99,6 +101,11 @@ export const errorDownload = (error) => ({
   payload: error,
 });
 
+export const successDownload = {
+  type: SUCCESS_DOWNLOAD,
+  payload: null,
+};
+
 export const endDownload = {
   type: END_DOWNLOAD,
   payload: false,
@@ -142,9 +149,9 @@ export const UserLoginFailed = (err) => {
 export const LogoutUser = () => {
   return {
     type: LOGOUT_USER,
-    payload: false
-  }
-}
+    payload: false,
+  };
+};
 
 export const UserLoginSuccess = (userInfo) => {
   return {
@@ -170,6 +177,6 @@ export const newUserRegistrationSuccess = (status) => {
 export const setUserEmail = (email) => {
   return {
     type: SET_USER_EMAIL,
-    payload: email
-  }
-}
+    payload: email,
+  };
+};

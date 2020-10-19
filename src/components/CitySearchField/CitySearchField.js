@@ -7,6 +7,7 @@ import {
   errorDownload,
   loadDataFromOpenWeatherMap,
   loadDataFromWeatherstack,
+  searchCity,
   selectApi,
 } from "../../actions/index";
 import { useSelector } from "react-redux";
@@ -16,12 +17,20 @@ import { Grid } from "@material-ui/core";
 import { useEffect } from "react";
 
 const CitySearchField = ({ api, cityName, email }) => {
-  const isValid =(str) => {
+  const isValid = (str) => {
     return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
-   }
+  };
   const dispatch = useDispatch();
-  const [cityInput, cityChangeInput] = useState({ text: "", error: false, helperText: null });
-  const [selectAPI, changeSelectAPI] = useState({ text: "", error: false, helperText: null });
+  const [cityInput, cityChangeInput] = useState({
+    text: "",
+    error: false,
+    helperText: null,
+  });
+  const [selectAPI, changeSelectAPI] = useState({
+    text: "",
+    error: false,
+    helperText: null,
+  });
   useEffect(() => {
     cityChangeInput({ text: cityName, error: false });
     changeSelectAPI(api);
@@ -30,10 +39,18 @@ const CitySearchField = ({ api, cityName, email }) => {
   const handleInputChange = (event) => {
     event.preventDefault();
     if (event.target.value.trim() !== "") {
-      cityChangeInput({ text: event.target.value.trim(), error: false, helperText: null });
-    }
-     else cityChangeInput({ text: event.target.value.trim(), error: true, helperText: 'Empty field' });
-     console.log(event.target.value);
+      cityChangeInput({
+        text: event.target.value.trim(),
+        error: false,
+        helperText: null,
+      });
+    } else
+      cityChangeInput({
+        text: event.target.value.trim(),
+        error: true,
+        helperText: "Empty field",
+      });
+    console.log(event.target.value);
   };
 
   const handleSelectChange = (event) => {
@@ -44,12 +61,16 @@ const CitySearchField = ({ api, cityName, email }) => {
 
   const handleOnSubmit = (event) => {
     if (selectAPI === "OpenWeatherMap") {
-      dispatch(loadDataFromOpenWeatherMap({city:cityInput.text, email: email}));
-      dispatch(selectApi(api));
+      dispatch(
+        loadDataFromOpenWeatherMap({ city: cityInput.text, email: email })
+      );
     } else if (selectAPI === "Weatherstack") {
-      dispatch(loadDataFromWeatherstack({city: cityInput.text, email: email}));
-      dispatch(selectApi(api));
+      dispatch(
+        loadDataFromWeatherstack({ city: cityInput.text, email: email })
+      );
     }
+    dispatch(selectApi(api));
+    dispatch(searchCity(cityInput.text));
     event.preventDefault();
   };
 
@@ -63,7 +84,7 @@ const CitySearchField = ({ api, cityName, email }) => {
             placeholder="Enter city"
             value={cityInput.text}
             onChange={handleInputChange}
-            helperText = {cityInput.helperText}
+            helperText={cityInput.helperText}
           />
         </Grid>
 
@@ -92,9 +113,8 @@ const CitySearchField = ({ api, cityName, email }) => {
 
 export default CitySearchField;
 
-
-const isValid =(str) => {
+const isValid = (str) => {
   return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
- }
+};
 
- console.log(isValid('asf'))
+console.log(isValid("asf"));

@@ -22,6 +22,7 @@ import {
   WeatherInfoAfterLogin,
   UserLoginFailed,
   UserLoginSuccess,
+  successDownload,
 } from "../actions/index";
 
 export function* rootSaga() {
@@ -75,13 +76,19 @@ function* getDataFromOpenWeather(action) {
         },
         referrerPolicy: "no-referrer",
         body: JSON.stringify(action.payload),
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .catch((error) => error);
     });
     console.log(data.dataResponse);
+    if (data.dataResponse === undefined) {
+      throw data;
+    }
     yield put(setDataFromOpenWeatherMapSuccess(data.dataResponse));
+    yield put(successDownload);
     yield put(selectApi("OpenWeatherMap"));
   } catch (error) {
-    yield put(errorDownload("City not found"));
+    yield put(errorDownload(error.message));
   } finally {
     yield put(endDownload);
   }
@@ -107,17 +114,15 @@ function* getDataFromWeatherstack(action) {
       }).then((res) => res.json());
     });
     console.log(data.dataResponse);
-  yield put(setDataFromWeatherStackSuccess(data.dataResponse));
-  yield put(selectApi("Weatherstack"));
-  }  
- catch (error) {
-  yield put(errorDownload("City not found"));
-} finally {
-  yield put(endDownload);
+    yield put(setDataFromWeatherStackSuccess(data.dataResponse));
+    yield put(successDownload);
+    yield put(selectApi("Weatherstack"));
+  } catch (error) {
+    yield put(errorDownload("City not found"));
+  } finally {
+    yield put(endDownload);
+  }
 }
-}
-
-
 
 const getPosition = (options) => {
   return new Promise(function (resolve, reject) {
@@ -206,6 +211,7 @@ function* WeatherInfoAfterLoginWorker(action) {
     if (data.api === "Weatherstack") {
       yield put(setDataFromWeatherStackSuccess(data.dataResponse));
     }
+    yield put(successDownload);
   } catch (error) {
     yield put(errorDownload(error));
   } finally {

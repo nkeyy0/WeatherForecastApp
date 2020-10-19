@@ -2,6 +2,7 @@ import {
   SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS,
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   SELECT_API,
+  SEARCH_CITY,
 } from "../constants/constants";
 import { convertToKilometers } from "../convert/index";
 
@@ -22,6 +23,12 @@ const initialState = {
 
 const weatherInfo = (state = initialState, action) => {
   switch (action.type) {
+    case SEARCH_CITY:
+      return {
+        ...state,
+        cityName: action.payload,
+      };
+
     case SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS:
       return {
         ...state,
@@ -36,7 +43,6 @@ const weatherInfo = (state = initialState, action) => {
         sunrise: action.payload.sys.sunrise,
         sunset: action.payload.sys.sunset,
         weatherImage: `http://openweathermap.org/img/w/${action.payload.weather[0].icon}.png`,
-        downloadError: null,
         api: "OpenWeatherMap",
       };
 
@@ -54,7 +60,6 @@ const weatherInfo = (state = initialState, action) => {
         weatherImage: action.payload.current.weather_icons[0],
         sunrise: null,
         sunset: null,
-        downloadError: null,
         api: "Weatherstack",
       };
     case SELECT_API:
