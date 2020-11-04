@@ -44,3 +44,4 @@ export const GetAvatarLetters = (str) => {
   return `${nameFirstLetter}${surnameFirstLetter}`;
 };
 
+export const getFirstLetter = (str) => str.slice(0,1).toUpperCase();

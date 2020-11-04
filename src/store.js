@@ -9,13 +9,21 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const saga = createSagaMiddleware();
 
-const persistConfig = {
+const weatherPersistConfig = {
   key: "weatherInfo",
   storage,
-  whitelist: ["weatherInfo"]
+  whitelist: ["weatherInfo", "auth", "download"]
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["auth"]
+};
+
+const persistedReducer = persistReducer(weatherPersistConfig, rootReducer);
+
+
 
 export const store = createStore(
   persistedReducer,

@@ -11,7 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Avatar } from "@material-ui/core";
 import { LogoutUser } from "../../actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { GetAvatarLetters } from "../../convert/index";
+import { getFirstLetter } from "../../convert/index";
 
 const Navigation = ({ isLogin, user }) => {
   const dispatch = useDispatch();
@@ -48,12 +48,12 @@ const Navigation = ({ isLogin, user }) => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <Typography variant="h6" display="inline">
-                {user}
+                {user.name} {user.surname}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={1}>
               <Avatar>
-                {GetAvatarLetters(user)}
+              {getFirstLetter(user.name)}{getFirstLetter(user.surname)}
               </Avatar>
               </Grid>
             <Grid item xs={12} sm={1}>

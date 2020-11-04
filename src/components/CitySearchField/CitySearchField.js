@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 
 import {
   errorDownload,
+  loadDataFromApis,
   loadDataFromOpenWeatherMap,
   loadDataFromWeatherstack,
   searchCity,
@@ -62,11 +63,11 @@ const CitySearchField = ({ api, cityName, email }) => {
   const handleOnSubmit = (event) => {
     if (selectAPI === "OpenWeatherMap") {
       dispatch(
-        loadDataFromOpenWeatherMap({ city: cityInput.text, email: email })
+        loadDataFromApis({ city: cityInput.text, email: email, api: selectAPI })
       );
     } else if (selectAPI === "Weatherstack") {
       dispatch(
-        loadDataFromWeatherstack({ city: cityInput.text, email: email })
+        loadDataFromApis({ city: cityInput.text, email: email, api: selectAPI })
       );
     }
     dispatch(selectApi(api));

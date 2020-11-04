@@ -1,7 +1,7 @@
 import { takeEvery, put, call, all } from "redux-saga/effects";
 import jwt_decode from "jwt-decode";
 import {
-  LOAD_DATA_FROM_OPENWEATHERMAP,
+  LOAD_DATA_FROM_APIS,
   LOAD_DATA_FROM_WEATHERSTACK,
   LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
   NEW_USER_REGISTRATION,
@@ -27,24 +27,17 @@ import {
 
 export function* rootSaga() {
   yield all([
-    watchFetchDataFromOpenWeatherMap(),
-    watchFetchDataFromWeatherstack(),
-    watchGeolocation(),
+    watchFetchDataFromApis(),
     watchNewUserRegistration(),
     watchUserLogin(),
-    watchWeatherInfoAfterAuth(),
   ]);
 }
 
 export function* watchGeolocation() {
   yield takeEvery(LOAD_GEOLOCATION_FROM_OPENWEATHERMAP, loadGeolocationWorker);
 }
-export function* watchFetchDataFromOpenWeatherMap() {
-  yield takeEvery(LOAD_DATA_FROM_OPENWEATHERMAP, getDataFromOpenWeather);
-}
-
-export function* watchFetchDataFromWeatherstack() {
-  yield takeEvery(LOAD_DATA_FROM_WEATHERSTACK, getDataFromWeatherstack);
+export function* watchFetchDataFromApis() {
+  yield takeEvery(LOAD_DATA_FROM_APIS, getWeatherFromApis);
 }
 
 export function* watchNewUserRegistration() {
@@ -55,15 +48,12 @@ export function* watchUserLogin() {
   yield takeEvery(USER_LOGIN, UserLoginWorker);
 }
 
-export function* watchWeatherInfoAfterAuth() {
-  yield takeEvery(WEATHER_INFO_AFTER_LOGIN, WeatherInfoAfterLoginWorker);
-}
 
-function* getDataFromOpenWeather(action) {
+function* getWeatherFromApis(action) {
   yield put(startDownload);
   try {
     const data = yield call(() => {
-      return fetch("http://localhost:5000/getWeatherInfoFromOpenWeatherMap", {
+      return fetch("http://localhost:5000/getWeatherInfo", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -80,13 +70,23 @@ function* getDataFromOpenWeather(action) {
         .then((res) => res.json())
         .catch((error) => error);
     });
-    console.log(data.dataResponse);
-    if (data.dataResponse === undefined) {
-      throw data;
+    console.log(data);
+    console.log(action.payload);
+    if (data.code === 404) {
+      const error = new Error();
+      error.message = "City not found!";
+      throw error;
     }
-    yield put(setDataFromOpenWeatherMapSuccess(data.dataResponse));
-    yield put(successDownload);
-    yield put(selectApi("OpenWeatherMap"));
+    if (action.payload.api === "OpenWeatherMap") {
+      yield put(setDataFromOpenWeatherMapSuccess(data.weatherInfo));
+      yield put(selectApi("OpenWeatherMap"));
+      yield put(errorDownload(null));
+    }
+    if (action.payload.api === "Weatherstack") {
+      yield put(setDataFromWeatherStackSuccess(data.weatherInfo));
+      yield put(selectApi("Weatherstack"));
+      yield put(errorDownload(null));
+    }
   } catch (error) {
     yield put(errorDownload(error.message));
   } finally {
@@ -94,41 +94,11 @@ function* getDataFromOpenWeather(action) {
   }
 }
 
-function* getDataFromWeatherstack(action) {
-  yield put(startDownload);
-  try {
-    const data = yield call(() => {
-      return fetch("http://localhost:5000/getWeatherInfoFromWeatherstack", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Expose-Headers": "Authorization",
-          Authorization: `${localStorage.getItem("jwtToken")}`,
-        },
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify(action.payload),
-      }).then((res) => res.json());
-    });
-    console.log(data.dataResponse);
-    yield put(setDataFromWeatherStackSuccess(data.dataResponse));
-    yield put(successDownload);
-    yield put(selectApi("Weatherstack"));
-  } catch (error) {
-    yield put(errorDownload("City not found"));
-  } finally {
-    yield put(endDownload);
-  }
-}
-
-const getPosition = (options) => {
-  return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
-};
+// const getPosition = (options) => {
+//   return new Promise(function (resolve, reject) {
+//     navigator.geolocation.getCurrentPosition(resolve, reject, options);
+//   });
+// };
 
 function* loadGeolocationWorker() {
   yield put(startDownload);
@@ -181,43 +151,6 @@ function* NewUserRegistrationWorker(action) {
   }
 }
 
-//getWeatherInfoAfterLogin
-
-function* WeatherInfoAfterLoginWorker(action) {
-  try {
-    yield put(startDownload);
-    const data = yield call(() => {
-      return fetch("http://localhost:5000/getWeatherInfoAfterLogin", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Expose-Headers": "Authorization",
-          Authorization: `${localStorage.getItem("jwtToken")}`,
-        },
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify(action.payload),
-      }).then((res) => {
-        return res.json();
-      });
-    });
-    console.log(data);
-    if (data.api === "OpenWeatherMap") {
-      yield put(setDataFromOpenWeatherMapSuccess(data.dataResponse));
-    }
-    if (data.api === "Weatherstack") {
-      yield put(setDataFromWeatherStackSuccess(data.dataResponse));
-    }
-    yield put(successDownload);
-  } catch (error) {
-    yield put(errorDownload(error));
-  } finally {
-    yield put(endDownload);
-  }
-}
 function* UserLoginWorker(action) {
   try {
     yield put(startDownload);
@@ -238,31 +171,43 @@ function* UserLoginWorker(action) {
         const token = res.headers.get("Authorization");
         console.log(token);
         localStorage.setItem("jwtToken", token);
-        return res.status;
+        return res.json();
       });
     });
 
-    if (data === 401) {
+    if (data.code === 401) {
       const error = new Error();
-      error.message = "Incorrect password. Try it again";
+      error.message = data.message;
       throw error;
     }
-    if (data === 404) {
+    if (data.code === 404) {
       const error = new Error();
-      error.message = "User with this email was not found";
+      error.message = data.message;
       throw error;
     }
     const token = localStorage.getItem("jwtToken");
     if (token) {
       const decodedUserInfo = jwt_decode(token);
-      console.log(decodedUserInfo.userName);
-      yield put(UserLoginSuccess(decodedUserInfo.userName));
+      console.log(decodedUserInfo);
+      const User = {
+        name: decodedUserInfo.name,
+        surname: decodedUserInfo.surname,
+        patronymic: decodedUserInfo.patronymic,
+        email: decodedUserInfo.email,
+        city: decodedUserInfo.city,
+      };
+      yield put(UserLoginSuccess(User));
     }
-    yield put(WeatherInfoAfterLogin({ email: action.payload.email }));
+    console.log(data.weatherInfo);
+    if (data.api === "OpenWeatherMap") {
+      yield put(setDataFromOpenWeatherMapSuccess(data.weatherInfo));
+    }
+    if (data.api === "Weatherstack") {
+      yield put(setDataFromWeatherStackSuccess(data.weatherInfo));
+    }
   } catch (error) {
     yield put(UserLoginFailed(error.message));
+  } finally {
+    yield put(endDownload);
   }
-  // } finally {
-  //   yield put(endDownload);
-  // }
 }

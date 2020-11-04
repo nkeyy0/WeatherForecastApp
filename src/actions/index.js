@@ -3,8 +3,6 @@ import {
   DISPLAY_TEMPERATURE,
   END_DOWNLOAD,
   ERROR_DOWNLOAD,
-  LOAD_DATA_FROM_OPENWEATHERMAP,
-  LOAD_DATA_FROM_WEATHERSTACK,
   LOAD_GEOLOCATION_FROM_OPENWEATHERMAP,
   SEARCH_CITY,
   SELECT_API,
@@ -23,6 +21,7 @@ import {
   WEATHER_INFO_AFTER_LOGIN,
   SET_WEATHER_INFO_SUCCESS,
   SUCCESS_DOWNLOAD,
+  LOAD_DATA_FROM_APIS
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -32,7 +31,6 @@ export const searchCity = (city) => {
     payload: city,
   };
 };
-
 
 export const displayTemperature = (temperature) => {
   return {
@@ -71,10 +69,10 @@ export const setDataFromWeatherStackSuccess = (dataFromAPI) => {
   };
 };
 
-export const loadDataFromOpenWeatherMap = (city) => {
+export const loadDataFromApis = (user) => {
   return {
-    type: LOAD_DATA_FROM_OPENWEATHERMAP,
-    payload: city,
+    type: LOAD_DATA_FROM_APIS,
+    payload: user
   };
 };
 
