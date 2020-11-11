@@ -12,14 +12,10 @@ const saga = createSagaMiddleware();
 const weatherPersistConfig = {
   key: "weatherInfo",
   storage,
-  whitelist: ["weatherInfo", "auth", "download"]
+  whitelist: ["weatherInfo", "auth", "download", "citiesWeather"]
 };
 
-const authPersistConfig = {
-  key: "auth",
-  storage,
-  whitelist: ["auth"]
-};
+
 
 const persistedReducer = persistReducer(weatherPersistConfig, rootReducer);
 

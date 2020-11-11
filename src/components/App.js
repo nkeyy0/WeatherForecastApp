@@ -1,6 +1,4 @@
 import React from "react";
-import CitySearchField from "./CitySearchField";
-import WeatherInfo from "./WeatherInfo";
 import Navigation from "./Navigation";
 import { Card, Typography, Grid } from "@material-ui/core";
 import { Container } from "@material-ui/core";
@@ -8,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { CardContent } from "@material-ui/core";
 import Login from "./Login";
 import Registration from "./Registration";
+import MyProfile from './MyProfile';
 import WeatherPage from "./WeatherPage";
-import { loadGeolocationFromOpenWeatherMap } from "../actions/index";
+import TemperatureChart from './TemperatureChart'
 import {
   Link,
   BrowserRouter as Router,
@@ -34,6 +33,8 @@ const App = () => {
           <Card>
             <CardContent>
               <Route exact path="/registration" component={Registration} />
+              {/* <Route exact path = '/myProfile' component = {MyProfile} /> */}
+              <Route exact path="/TemperatureChart" component = {TemperatureChart}/>
               <Route exact path="/" component = {isLogin ? WeatherPage : Login}>
               </Route>
             </CardContent>
@@ -46,6 +47,3 @@ const App = () => {
 
 export default App;
 
-{
-  /*  */
-}

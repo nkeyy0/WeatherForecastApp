@@ -231,12 +231,12 @@ export default function Login({ errorLogin, isLogin, loading }) {
           </Button>
           <Grid container>
             <Grid item xs>
-              <LinkMaterial href="#" variant="body2">
+              <LinkMaterial variant="body2">
                 Forgot password?
               </LinkMaterial>
             </Grid>
             <Grid item>
-              <LinkMaterial href="#" variant="body2">
+              <LinkMaterial variant="body2">
                 <Link to="/registration" style = {{textDecoration: 'none'}}>
                   {"Don't have an account? Sign Up"}
                 </Link>

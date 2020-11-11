@@ -21,7 +21,9 @@ import {
   WEATHER_INFO_AFTER_LOGIN,
   SET_WEATHER_INFO_SUCCESS,
   SUCCESS_DOWNLOAD,
-  LOAD_DATA_FROM_APIS
+  LOAD_DATA_FROM_APIS,
+  SET_DATA_TO_CHARTS,
+  LOAD_CITIES_FROM_DB
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -82,6 +84,13 @@ export const loadDataFromWeatherstack = (city) => {
     payload: city,
   };
 };
+
+export const loadCitiesWeatherFromDB = (email) => {
+  return {
+    type: LOAD_CITIES_FROM_DB,
+    payload: email
+  }
+}
 
 export const loadGeolocationFromOpenWeatherMap = () => {
   return {
@@ -178,3 +187,10 @@ export const setUserEmail = (email) => {
     payload: email,
   };
 };
+
+export const setDataToCharts = (data) => {
+  return{
+    type: SET_DATA_TO_CHARTS,
+    payload: data
+  }
+}

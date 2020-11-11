@@ -1,6 +1,6 @@
-// const CACHE_NAME = "cache v 9.0";
-// const cacheList = ["/"];
-// const CACHING_DURATION =  2 * 3600;
+// const CACHE_NAME = "cache v 1.0";
+// const cacheList = ["/getWeatherInfo"];
+// const CACHING_DURATION =  3600;
 
 // self.addEventListener("install", (event) => {
 //   console.log("Установлен");
@@ -16,9 +16,10 @@
 // self.addEventListener("fetch", (event) => {
 //   const { request } = event;
 
+
 //   event.respondWith(
 //     caches.open(`${CACHE_NAME}-tiles`).then((cache) =>
-//       cache.match(request).then((response) => {
+//       cache.match(request.url === 'http://localhost:5000/getWeatherInfo').then((response) => {
 //         if (response) {
 //           const expirationDate = Date.parse(
 //             response.headers.get("sw-cache-expires")
