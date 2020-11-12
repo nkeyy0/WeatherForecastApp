@@ -96,6 +96,7 @@ function* getWeatherFromApis(action) {
       yield put(selectApi("Weatherstack"));
       yield put(errorDownload(null));
     }
+    yield put(loadCitiesWeatherFromDB(action.payload.email));
   } catch (error) {
     yield put(errorDownload(error.message));
   } finally {
@@ -220,6 +221,7 @@ function* UserLoginWorker(action) {
       yield put(selectApi("Weatherstack"));
       yield put(errorDownload(null));
     }
+    yield put(loadCitiesWeatherFromDB(action.payload.email));
   } catch (error) {
     yield put(UserLoginFailed(error.message));
   } finally {
