@@ -12,7 +12,7 @@ const saga = createSagaMiddleware();
 const weatherPersistConfig = {
   key: "weatherInfo",
   storage,
-  whitelist: ["weatherInfo", "auth", "download", "citiesWeather"]
+  whitelist: ["weatherInfo", "auth", "download", "citiesWeather", "weatherChart"]
 };
 
 

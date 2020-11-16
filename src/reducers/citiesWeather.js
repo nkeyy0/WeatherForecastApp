@@ -1,12 +1,12 @@
-import { SET_DATA_TO_CHARTS } from "../constants/constants";
+import { SET_CITIES_TO_CHARTS } from "../constants/constants";
 
 const initialState = {
-  cities: null,
+  cities: [],
 };
 
 const citiesWeather = (state = initialState, action) => {
   switch (action.type) {
-    case SET_DATA_TO_CHARTS:
+    case SET_CITIES_TO_CHARTS:
       return {
         ...state,
         cities: action.payload,

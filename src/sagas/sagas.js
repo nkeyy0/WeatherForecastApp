@@ -24,7 +24,7 @@ import {
   UserLoginFailed,
   UserLoginSuccess,
   successDownload,
-  setDataToCharts,
+  setCitiesToCharts,
   loadCitiesWeatherFromDB,
 } from "../actions/index";
 
@@ -84,6 +84,11 @@ function* getWeatherFromApis(action) {
     if (data.code === 404) {
       const error = new Error();
       error.message = "City not found!";
+      throw error;
+    }
+    if(data.code === 401){
+      const error = new Error();
+      error.message = 'User is not authorized!';
       throw error;
     }
     if (action.payload.api === "OpenWeatherMap") {
@@ -259,7 +264,7 @@ function* getCitiesWeatherWorker(action) {
       error.message = "Cities not found!";
       throw error;
     }
-    yield put(setDataToCharts(data.cities));
+    yield put(setCitiesToCharts(data.cities));
     yield put(errorDownload(null));
   } catch (error) {
     yield put(errorDownload(error.message));

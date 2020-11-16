@@ -23,7 +23,10 @@ import {
   SUCCESS_DOWNLOAD,
   LOAD_DATA_FROM_APIS,
   SET_DATA_TO_CHARTS,
-  LOAD_CITIES_FROM_DB
+  LOAD_CITIES_FROM_DB,
+  SET_DATA_TO_CHART,
+  SET_CITIES_TO_CHARTS,
+  SET_LABELS_TO_CHART
 } from "../constants/constants";
 
 export const searchCity = (city) => {
@@ -74,7 +77,7 @@ export const setDataFromWeatherStackSuccess = (dataFromAPI) => {
 export const loadDataFromApis = (user) => {
   return {
     type: LOAD_DATA_FROM_APIS,
-    payload: user
+    payload: user,
   };
 };
 
@@ -88,9 +91,9 @@ export const loadDataFromWeatherstack = (city) => {
 export const loadCitiesWeatherFromDB = (email) => {
   return {
     type: LOAD_CITIES_FROM_DB,
-    payload: email
-  }
-}
+    payload: email,
+  };
+};
 
 export const loadGeolocationFromOpenWeatherMap = () => {
   return {
@@ -188,9 +191,23 @@ export const setUserEmail = (email) => {
   };
 };
 
-export const setDataToCharts = (data) => {
-  return{
-    type: SET_DATA_TO_CHARTS,
-    payload: data
+export const setCitiesToCharts = (data) => {
+  return {
+    type: SET_CITIES_TO_CHARTS,
+    payload: data,
+  };
+};
+
+export const setDataToChart = (data) => {
+  return {
+    type: SET_DATA_TO_CHART,
+    payload: data,
+  };
+};
+
+export const setLabelsToChart = (labels) => {
+  return {
+    type: SET_LABELS_TO_CHART,
+    payload: labels
   }
 }

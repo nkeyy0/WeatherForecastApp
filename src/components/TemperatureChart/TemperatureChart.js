@@ -1,92 +1,151 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup, Container, Grid } from "@material-ui/core";
+import { Button, ButtonGroup, Container, FormControl, Grid } from "@material-ui/core";
 import Chart from "chart.js";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loadCitiesWeatherFromDB, setDataToCharts } from "../../actions";
+import { loadCitiesWeatherFromDB, setDataToChart, setLabelsToChart } from "../../actions";
 import {
   convertTemperatureToChart,
   generateRandomColor,
+  setDataToChartHelper,
+  generateRandomColorForChart,
+  getCityArray
 } from "../../convert/index";
+import {Line} from 'react-chartjs-2';
+import {Select, MenuItem, Input, InputLabel} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
-const TemperatureChart = ({ cities, email, loading }) => {
-  const chartRef = React.useRef();
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+}));
+
+
+
+const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
+  // const chartRef = React.useRef();
+  const classes = useStyles();
   const dispatch = useDispatch();
-
-  // const [weatherToChart, changeWeatherToChart] = useState({data: []});
-  const [resData, changeResData] = useState(null)
-  const [timeToChart, changeTimeToChart] = useState(null);
-  
-
- 
- 
-  // const handleOnPressureClick = (event) => {
-  //   event.preventDefault();
-  //   const temperatureData = convertTemperatureToChart(cities).pressure;
-  //   const labelsToChart = convertTemperatureToChart(cities).cities;
-  //   weatherToChart = temperatureData.map((value) => {
-  //     return { data: value };
-  //   });
-  //   dataToChart = labelsToChart.map((value) => {
-  //     return {
-  //       label: value,
-  //       lineTension: 0,
-  //       fill: false,
-  //       borderColor: generateRandomColor(),
-  //     };
-  //   });
-  //   for (let i = 0; i < dataToChart.length; i++) {
-  //     changeResData(Object.assign(weatherToChart[i], dataToChart[i]));
-  //   }
-  // };
-
-  useEffect(() => {
-    if(!cities && email) {
+  console.log(cities);
+  const colors = generateRandomColorForChart(cities);
+  console.log(colors);
+  const [chartTitle, changeChartTitle] = useState('Temperature changes');
+  const [weatherIndicator, changeWeatherIndicator] = useState('temperature');
+  const [colorsForChart, changeColorsForChart] = useState(colors); 
+  const [chartData, setChartData] = useState({});
+  const [citiesToFiler, setCitiesToFilter] = useState([]);
+  const [personName, setPersonName] = React.useState([]);
+  const handleSelectChange = (event) => {
+    setPersonName(event.target.value);
+  }
+  const handleOnWindSpeedClick = (event) => {
+    changeChartTitle('Wind speed changes');
+    changeWeatherIndicator('wind speed');
+    const res = setDataToChartHelper(cities, 'wind speed');
+    dispatch(setLabelsToChart(res.time));
+    console.log(res.data, 'res');
+    dispatch(setDataToChart(res.data));
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+  }
+  const handleOnHumidityClick = (event) => {
+    changeChartTitle('Humidity changes');
+    changeWeatherIndicator('humidity');
+    const res = setDataToChartHelper(cities, 'humidity');
+    dispatch(setLabelsToChart(res.time));
+    dispatch(setDataToChart(res.data));
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+  }
+  const handleOnPressureClick = (event) => {
+    changeChartTitle('Pressure changes');
+    changeWeatherIndicator('pressure');
+    const res = setDataToChartHelper(cities, 'pressure');
+    dispatch(setLabelsToChart(res.time));
+   
+    dispatch(setDataToChart(res.data));
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+  }
+  const handleOnTemperatureClick = (event) => {
+    changeChartTitle('Temperature changes');
+    changeWeatherIndicator('temperature');
+    const res = setDataToChartHelper(cities, 'temperature');
+    dispatch(setLabelsToChart(res.time));
+    dispatch(setDataToChart(res.data));
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+  }
+  const setData = (cities) => {
+    if (!cities.length) {
       dispatch(loadCitiesWeatherFromDB(email));
     }
-    if (cities) {
-      const timeData = cities.map((value) => {
-        return new Date(value.timeRequest);
-      });
-      changeTimeToChart(timeData);
-      const temperatureData = convertTemperatureToChart(cities).temp;
-      console.log(temperatureData);
-      const labelsToChart = convertTemperatureToChart(cities).cities;
-      console.log(labelsToChart);
-      
-      const weatherToChart = temperatureData.map((value) => {
-          return { data: value };
-        })
-      console.log(weatherToChart);
-      const dataToChart = labelsToChart.map((value) => {
-        return {
-          label: value,
-          lineTension: 0,
-          fill: false,
-          borderColor: generateRandomColor(),
-        };
-      });
-      const resultData = [];
-      for (let i = 0; i < dataToChart.length; i++) {
-         resultData.push(Object.assign(weatherToChart[i], dataToChart[i]));
-      }
-      console.log(resultData);
-      changeResData(resultData);
-      console.log(resData);
-      const myChartRef = chartRef.current.getContext("2d");
+    const res = setDataToChartHelper(cities, weatherIndicator);
+    if(!labelsToChart.length){
+      dispatch(setLabelsToChart(res.time));
+    }
+    dispatch(setDataToChart(res.data));
+    console.log(data);
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+    return res;
+  };
 
-      new Chart(myChartRef, {
-        type: "line",
-        data: {
-          //Bring in data
-          labels: timeToChart,
-          datasets: [...resultData],
-        },
-        options: {
+  useEffect(() => {
+    
+    const resultData = setData(cities);
+    setChartData({
+      labels: labelsToChart,
+      datasets: [...data]
+    });
+    const citiesForSelect = getCityArray(cities);
+    setCitiesToFilter(citiesForSelect);
+    console.log(data)
+  }, [labelsToChart]);
+  // if(loading){
+  //   return (
+  //     <Grid container justify="center">
+  //       <CircularProgress size={60} />
+  //     </Grid>
+  //   );
+  // }
+  // else {
+  return (
+    <div>
+      <Container>
+        <Grid container justify="center">
+          <Grid item>
+            <ButtonGroup
+              size="large"
+              color="primary"
+              aria-label="large outlined primary button group"
+            >
+              <Button onClick = {handleOnTemperatureClick}>Temperature</Button>
+              <Button onClick = {handleOnPressureClick}>Pressure</Button>
+              <Button onClick = {handleOnWindSpeedClick}>Wind speed</Button>
+              <Button onClick = {handleOnHumidityClick}>Humidity</Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+      </Container>
+      <Line data = {chartData} options =  {{
           title: {
             display: true,
-            text: "Temperature changes",
+            text: chartTitle,
           },
           scales: {
             xAxes: [
@@ -102,39 +161,26 @@ const TemperatureChart = ({ cities, email, loading }) => {
             //   max: 30,
             // },
           },
-        },
-      });
-    }
-  }, [cities]);
-  // if(loading){
-  //   return (
-  //     <Grid container justify="center">
-  //       <CircularProgress size={60} />
-  //     </Grid>
-  //   );
-  // }
-  // else {
-    console.log(resData, 'state')
-  return (
-    <div>
-      <Container>
-        <Grid container justify="center">
-          <Grid item>
-            <ButtonGroup
-              size="large"
-              color="primary"
-              aria-label="large outlined primary button group"
-            >
-              <Button>Temperature</Button>
-              <Button>Pressure</Button>
-              <Button>Wind speed</Button>
-              <Button>Humidity</Button>
-            </ButtonGroup>
-          </Grid>
-        </Grid>
-      </Container>
-
-      <canvas id="myChart" ref={chartRef} />
+        }}></Line>
+        <FormControl>
+        <InputLabel  htmlFor = 'demo-mutiple-name' className = {classes.formControl}>Filter by City</InputLabel>
+        <Select
+          labelId="demo-mutiple-name-label"
+          id="demo-mutiple-name"
+          multiple
+          value={personName}
+          onChange={handleSelectChange}
+          input={<Input />}
+        >
+          {citiesToFiler.map((name) => (
+            <MenuItem key={name} value={name}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+        </FormControl>
+      
+      {/* <canvas id="myChart" ref={chartRef} /> */}
     </div>
   );
 };
