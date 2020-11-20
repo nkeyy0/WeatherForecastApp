@@ -34,7 +34,7 @@ const App = () => {
             <CardContent>
               <Route exact path="/registration" component={Registration} />
               {/* <Route exact path = '/myProfile' component = {MyProfile} /> */}
-              <Route exact path="/TemperatureChart" component = {TemperatureChart}/>
+              <Route exact path="/TemperatureChart" component =  {isLogin ? TemperatureChart : Login}/>
               <Route exact path="/" component = {isLogin ? WeatherPage : Login}>
               </Route>
             </CardContent>
