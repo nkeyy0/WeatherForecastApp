@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import 'chartjs-plugin-colorschemes';
 import "date-fns";
 import {
   Button,
@@ -26,6 +27,9 @@ import {
   generateRandomColorForChart,
   getCityArray,
   filterByCity,
+  getDateForPicker,
+  filterByDate,
+  resultFilter,
 } from "../../convert/index";
 import { Line } from "react-chartjs-2";
 import {
@@ -60,12 +64,18 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
   const [chartData, setChartData] = useState({});
   const [citiesToFiler, setCitiesToFilter] = useState([]);
   const [cityName, setCityName] = React.useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
+  const [selectedDateMin, setSelectedDateMin] = useState(
+    getDateForPicker(cities).min
+  );
+  const [selectedDateMax, setSelectedDateMax] = useState(
+    getDateForPicker(cities).max
   );
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleMinDateChange = (date) => {
+    setSelectedDateMin(date);
+  };
+  const handleMaxDateChange = (date) => {
+    setSelectedDateMax(date);
   };
 
   const handleSelectChange = (event) => {
@@ -76,7 +86,13 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     changeChartTitle("Wind speed changes");
     changeWeatherIndicator("wind speed");
     if (cityName.length) {
-      const res = filterByCity(cities, cityName, "wind speed");
+      const res = resultFilter(
+        cities,
+        cityName,
+        selectedDateMin,
+        selectedDateMax,
+        "wind speed"
+      );
       dispatch(setLabelsToChart(...res.time));
       dispatch(setDataToChart(res.data));
       setChartData({
@@ -100,7 +116,13 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     changeWeatherIndicator("humidity");
     console.log("city name:", cityName);
     if (cityName.length) {
-      const res = filterByCity(cities, cityName, "humidity");
+      const res = resultFilter(
+        cities,
+        cityName,
+        selectedDateMin,
+        selectedDateMax,
+        "humidity"
+      );
       dispatch(setLabelsToChart(...res.time));
       dispatch(setDataToChart(res.data));
       setChartData({
@@ -122,7 +144,13 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     changeChartTitle("Pressure changes");
     changeWeatherIndicator("pressure");
     if (cityName.length) {
-      const res = filterByCity(cities, cityName, "pressure");
+      const res = resultFilter(
+        cities,
+        cityName,
+        selectedDateMin,
+        selectedDateMax,
+        "pressure"
+      );
       dispatch(setLabelsToChart(...res.time));
       dispatch(setDataToChart(res.data));
       setChartData({
@@ -145,7 +173,13 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     changeChartTitle("Temperature changes");
     changeWeatherIndicator("temperature");
     if (cityName.length) {
-      const res = filterByCity(cities, cityName, "temperature");
+      const res = resultFilter(
+        cities,
+        cityName,
+        selectedDateMin,
+        selectedDateMax,
+        "temperature"
+      );
       dispatch(setLabelsToChart(...res.time));
       dispatch(setDataToChart(res.data));
       setChartData({
@@ -166,10 +200,17 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
 
   const handleFilterSubmit = (event) => {
     event.preventDefault();
-    const res = filterByCity(cities, cityName, weatherIndicator);
+    const res = resultFilter(
+      cities,
+      cityName,
+      selectedDateMin,
+      selectedDateMax,
+      weatherIndicator
+    );
     dispatch(setLabelsToChart(...res.time));
     dispatch(setDataToChart(res.data));
     console.log("FILTER::::::::::::", data);
+
     setChartData({
       labels: labelsToChart,
       datasets: [...data],
@@ -187,6 +228,8 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
       labels: labelsToChart,
       datasets: [...data],
     });
+    setSelectedDateMin(getDateForPicker(cities).min);
+    setSelectedDateMax(getDateForPicker(cities).max);
   };
 
   const setData = (cities) => {
@@ -266,10 +309,12 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
                 },
               },
             ],
-            // ticks: {
-            //   min: -30,
-            //   max: 30,
-            // },
+          },
+          plugins: {
+            colorschemes: {
+              scheme: "brewer.Paired12",
+              fillAlpha: 0.7
+            },
           },
         }}
       ></Line>
@@ -277,13 +322,10 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         <Grid container spacing={2} justify="center" direction="column">
           <Grid item>
             <FormControl style={{ minWidth: 120, maxWidth: 200 }}>
-              <InputLabel id="demo-mutiple-checkbox-label" required>
-                Filter by City
-              </InputLabel>
+              <InputLabel id="select-city-label">Filter by City</InputLabel>
               <Select
-                required
-                labelId="demo-mutiple-checkbox-label"
-                id="demo-mutiple-checkbox"
+                labelId="select-city-label"
+                id="select-city"
                 multiple
                 value={cityName}
                 onChange={handleSelectChange}
@@ -298,21 +340,40 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
                 ))}
               </Select>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Date picker inline"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                  />
-                
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="min-date-picker"
+                  label="Minimum date"
+                  minDate={getDateForPicker(cities).min}
+                  maxDate={selectedDateMax}
+                  value={selectedDateMin}
+                  onChange={handleMinDateChange}
+                  autoOk
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="max-date-picker"
+                  label="Maximum date"
+                  minDate={selectedDateMin}
+                  maxDate={getDateForPicker(cities).max}
+                  value={selectedDateMax}
+                  onChange={handleMaxDateChange}
+                  autoOk
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
               </MuiPickersUtilsProvider>
             </FormControl>
           </Grid>

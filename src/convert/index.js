@@ -1,3 +1,5 @@
+import { DAY, THREE_HOURS } from "../constants/constants";
+
 export const convertToCelsius = (temperature) =>
   Math.round(temperature - 273.15);
 export const convertToKilometers = (m) => (m / 1000).toFixed(1);
@@ -141,8 +143,6 @@ export const setDataToChartHelper = (arr, indicator) => {
 
 //
 
-
-
 const generateRandomColor = () => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
   return `#${randomColor}`;
@@ -166,26 +166,31 @@ export const generateRandomColorForChart = (arr) => {
   });
 };
 
-// export const cityToLabel = (arr) => {
-//   const result = Object.values(arr.reduce((acc, city) => {
-//     const { name } = city;
+export const getDateForPicker = (arr) => {
+  const sortResult = Object.values(
+    arr.reduce((acc, city) => {
+      const { name } = city;
 
-//     if (!acc[name]) acc[name] = [];
-//     acc[name].push(city);
+      if (!acc[name]) acc[name] = [];
+      acc[name].push(city);
 
-//     return acc;
-//   }, {}));
-
-// const cityDataToChart = result.map((value) => {
-//   return value.map(temp => {
-//     return temp.name
-//   })
-// });
-// const res = cityDataToChart.map(city => {
-//   return city[0];
-// })
-//   return res;
-// }
+      return acc;
+    }, {})
+  );
+  const dateArray = sortResult.map((value) =>
+    value.map((date) => date.timeRequest)
+  );
+  const dateForSort = dateArray.reduce((res, value) => {
+    return res.concat(value);
+  }, []);
+  const sortedDate = dateForSort.sort((a, b) => new Date(a) - new Date(b));
+  const min = new Date(sortedDate.shift());
+  const max = new Date(sortedDate.pop());
+  return {
+    min: `${min.getFullYear()}-${min.getMonth() + 1}-${min.getDate()}`,
+    max: `${max.getFullYear()}-${max.getMonth() + 1}-${max.getDate()}`,
+  };
+};
 
 export const getCityArray = (arr) => {
   const sortResult = Object.values(
@@ -209,7 +214,44 @@ export const getCityArray = (arr) => {
   return citiesNamesArray;
 };
 
-export const filterByCity = (arr, searchTerms, indicator) => {
+const filterByDate = (
+  arr,
+  min = new Date('11 - 10 - 2020'),
+  max = new Date('11 - 10 - 2021')
+) => {
+  console.log('min:', new Date(min), 'max:' ,new Date(max))
+  const dateArray = arr.reduce((acc, value) => {
+    acc.push(
+      value.reduce((res, date) => {
+        if (
+          new Date(date.timeRequest).getTime() >= new Date(min).getTime()  &&
+          new Date(date.timeRequest).getTime() <= new Date(max).getTime() + DAY 
+        ) {
+          res.push(date);
+        }
+        return res;
+      }, [])
+    );
+    return acc;
+  }, []);
+  console.log(dateArray.filter((value) => value.length));
+  return dateArray.filter((value) => value.length);
+};
+
+const filterByCity = (arr, searchTerms) => {
+  const filterArray = [];
+  for (let i = 0; i < searchTerms.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if (searchTerms[i] === arr[j][0].name) {
+        filterArray.push(arr[j]);
+      }
+    }
+  }
+  console.log(filterArray);
+  return filterArray;
+};
+
+export const resultFilter = (arr, searchTerms, min, max, indicator) => {
   const sortResult = Object.values(
     arr.reduce((acc, city) => {
       const { name } = city;
@@ -220,23 +262,25 @@ export const filterByCity = (arr, searchTerms, indicator) => {
       return acc;
     }, {})
   );
-  const filterArray = [];
-  for (let i = 0; i < searchTerms.length; i++) {
-    for (let j = 0; j < sortResult.length; j++) {
-      console.log(searchTerms[i], sortResult[j][0].name);
-      if (searchTerms[i] === sortResult[j][0].name) {
-        console.log(searchTerms[i], sortResult[j][0].name, "equals");
-        filterArray.push(sortResult[j]);
-      }
-    }
+  const filter = [];
+  console.log(searchTerms.length);
+  if (!searchTerms.length) {
+    filter.push(...filterByDate(sortResult, min, max));
+  } else {
+    const cityFilterArray = filterByCity(sortResult, searchTerms);
+    filter.push(...filterByDate(cityFilterArray, min, max));
   }
-  const tempData = filterArray.map((value) => {
+  console.log("FILTER:", filter);
+  const tempData = filter.map((value) => {
+    console.log('tempValue:', value)
     return value.map((temp) => {
+      console.log('temp', temp);
       return { x: new Date(temp.timeRequest), y: temp.temperature };
     });
   });
+  console.log('tempData:', tempData);
   console.log(tempData);
-  const cityDataToChart = filterArray.map((value) => {
+  const cityDataToChart = filter.map((value) => {
     return value.map((temp) => {
       return temp.name;
     });
@@ -244,22 +288,22 @@ export const filterByCity = (arr, searchTerms, indicator) => {
   const citiesNamesArray = cityDataToChart.map((city) => {
     return city[0];
   });
-  const pressureData = filterArray.map((value) => {
+  const pressureData = filter.map((value) => {
     return value.map((press) => {
       return { x: new Date(press.timeRequest), y: press.pressure };
     });
   });
-  const windSpeedData = filterArray.map((value) => {
+  const windSpeedData = filter.map((value) => {
     return value.map((wind) => {
       return { x: new Date(wind.timeRequest), y: wind.windSpeed };
     });
   });
-  const humidityData = filterArray.map((value) => {
+  const humidityData = filter.map((value) => {
     return value.map((hum) => {
       return { x: new Date(hum.timeRequest), y: hum.humidity };
     });
   });
-  const timeData = filterArray.map((value) => {
+  const timeData = filter.map((value) => {
     return value.map((date) => {
       return new Date(date.timeRequest);
     });
@@ -311,410 +355,4 @@ export const filterByCity = (arr, searchTerms, indicator) => {
   };
 };
 
-
-
-// getDateForPicker = (arr) => {
-//   const sortResult = Object.values(
-//     arr.reduce((acc, city) => {
-//       const { name } = city;
-
-//       if (!acc[name]) acc[name] = [];
-//       acc[name].push(city);
-
-//       return acc;
-//     }, {})
-//   );
-//   const dateArray = sortResult.map(value => value.map(date => date.timeRequest));
-//   const dateForSort = dateArray.reduce((res, value) => {
-//     return res.concat(value)
-//   }, []);
-//   const sortedDate = dateForSort.sort((a, b) => new Date(a) - new Date(b));
-//   return{
-//     min: sortedDate.shift(),
-//     max: sortedDate.pop()
-//   }
-// }
-
-// const arr = [
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T07:39:33.831Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:07:24.506Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:07:26.209Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:07:27.601Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:07:28.994Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:08:09.552Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:08:10.948Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:08:12.321Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:08:13.613Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 2,
-//     pressure: 1033,
-//     windSpeed: 3,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:25:35.714Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 4,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T08:43:17.927Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 4,
-//     pressure: 1033,
-//     windSpeed: 0,
-//     humidity: 93,
-//     api: "Weatherstack",
-//     timeRequest: "2020-11-11T08:43:30.219Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 4,
-//     pressure: 1033,
-//     windSpeed: 0,
-//     humidity: 93,
-//     api: "Weatherstack",
-//     timeRequest: "2020-11-11T08:53:23.640Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 7,
-//     humidity: 81,
-//     api: "Weatherstack",
-//     timeRequest: "2020-11-11T09:06:26.628Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 2,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:06:29.790Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 2,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:11:28.213Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 2,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:11:29.882Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 2,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:11:34.652Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 2,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:11:36.956Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 5,
-//     pressure: 1033,
-//     windSpeed: 1,
-//     humidity: 80,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-11T09:30:53.622Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 2,
-//     pressure: 1031,
-//     windSpeed: 4,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:51:54.365Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 1,
-//     pressure: 1031,
-//     windSpeed: 1,
-//     humidity: 83,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:52:01.670Z",
-//   },
-//   {
-//     name: "New York",
-//     temperature: 18.88,
-//     pressure: 1013,
-//     windSpeed: 2.1,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:52:52.488Z",
-//   },
-//   {
-//     name: "New York",
-//     temperature: 18.87,
-//     pressure: 1013,
-//     windSpeed: 2.1,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:59:37.135Z",
-//   },
-//   {
-//     name: "Moscow",
-//     temperature: 0.49,
-//     pressure: 1030,
-//     windSpeed: 3,
-//     humidity: 82,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:59:44.173Z",
-//   },
-//   {
-//     name: "Urbany",
-//     temperature: 5.38,
-//     pressure: 1026,
-//     windSpeed: 1,
-//     humidity: 86,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T08:59:52.545Z",
-//   },
-//   {
-//     name: "antarctica",
-//     temperature: -28.13,
-//     pressure: 1002,
-//     windSpeed: 8.89,
-//     humidity: 82,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T09:00:36.882Z",
-//   },
-//   {
-//     name: "Antarctica",
-//     temperature: -28.13,
-//     pressure: 1002,
-//     windSpeed: 8.89,
-//     humidity: 82,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T09:00:59.103Z",
-//   },
-//   {
-//     name: "Kirov",
-//     temperature: -0.56,
-//     pressure: 1016,
-//     windSpeed: 6.29,
-//     humidity: 94,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T09:03:26.040Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 3,
-//     pressure: 1031,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T10:05:18.929Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 3,
-//     pressure: 1031,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T10:08:44.591Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 3,
-//     pressure: 1031,
-//     windSpeed: 1,
-//     humidity: 74,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-12T10:09:35.115Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 0,
-//     pressure: 1030,
-//     windSpeed: 3,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T07:28:28.630Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 1,
-//     pressure: 1028,
-//     windSpeed: 3,
-//     humidity: 87,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T07:28:39.903Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 0,
-//     pressure: 1030,
-//     windSpeed: 3,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T07:28:50.683Z",
-//   },
-//   {
-//     name: "Minsk",
-//     temperature: 1,
-//     pressure: 1028,
-//     windSpeed: 3,
-//     humidity: 85,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T08:10:58.559Z",
-//   },
-//   {
-//     name: "Moscow",
-//     temperature: 3.92,
-//     pressure: 1031,
-//     windSpeed: 2,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T09:37:44.246Z",
-//   },
-//   {
-//     name: "Urbany",
-//     temperature: 7.94,
-//     pressure: 1024,
-//     windSpeed: 0.5,
-//     humidity: 81,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T09:38:01.816Z",
-//   },
-//   {
-//     name: "New York",
-//     temperature: 8.54,
-//     pressure: 1018,
-//     windSpeed: 3.1,
-//     humidity: 93,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-13T09:38:27.652Z",
-//   },
-//   {
-//     name: "New York",
-//     temperature: 10.1,
-//     pressure: 1011,
-//     windSpeed: 3.1,
-//     humidity: 40,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-16T08:49:18.743Z",
-//   },
-//   {
-//     name: "Braslaw",
-//     temperature: 2.88,
-//     pressure: 1023,
-//     windSpeed: 5.87,
-//     humidity: 84,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-16T09:21:37.028Z",
-//   },
-//   {
-//     name: "Vitebsk",
-//     temperature: 1,
-//     pressure: 1026,
-//     windSpeed: 5,
-//     humidity: 89,
-//     api: "OpenWeatherMap",
-//     timeRequest: "2020-11-16T09:21:42.973Z",
-//   },
-// ];
-
-// console.log(getDateForPicker(arr));
 

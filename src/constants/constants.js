@@ -35,3 +35,5 @@ export const SET_CITIES_TO_CHARTS = "SET_DATA_TO_CHARTS";
 export const LOAD_CITIES_FROM_DB = "LOAD_CITIES_FROM_DB";
 export const SET_DATA_TO_CHART = "SET_DATA_TO_CHART";
 export const SET_LABELS_TO_CHART = "SET_LABELS_TO_CHART";
+export const DAY = 1000 * 60 * 60 * 24;
+export const THREE_HOURS = 60 * 60 * 3;
