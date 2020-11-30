@@ -99,7 +99,7 @@ const CitySearchField = ({ api, cityName, email }) => {
           <Button
             fullWidth
             variant="contained"
-            color="secondary"
+            color="primary"
             type="submit"
             size="large"
             startIcon={<SearchIcon></SearchIcon>}

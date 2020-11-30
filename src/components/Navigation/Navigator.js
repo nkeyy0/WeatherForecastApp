@@ -15,7 +15,21 @@ import { getFirstLetter } from "../../convert/index";
 import { Menu, MenuItem, Popper } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
 const Navigation = ({ isLogin, user }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const handleOnClickLogout = (event) => {
     event.preventDefault();
@@ -34,7 +48,8 @@ const Navigation = ({ isLogin, user }) => {
     setAnchorEl(null);
   };
   const handleClickOnMyProfile = (event) => {
-    // dispatch(loadCitiesWeatherFromDB(user.email));
+    event.preventDefault();
+    dispatch(loadCitiesWeatherFromDB(user.email));
     setAnchorEl(null);
   }
 
@@ -43,8 +58,7 @@ const Navigation = ({ isLogin, user }) => {
 
   if (!isLogin) {
     return (
-      <Container maxWidth="lg">
-        <AppBar position="static" color="secondary">
+        <AppBar position="static" color="primary">
           <Toolbar>
             <Grid container direction="row" spacing={0}>
               <Grid item xs={12} sm={12}>
@@ -53,20 +67,17 @@ const Navigation = ({ isLogin, user }) => {
             </Grid>
           </Toolbar>
         </AppBar>
-      </Container>
     );
   }
 
   return (
-    <Container maxWidth="lg">
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color='primary' title = "Weather">
         <Toolbar>
+        <Typography variant="h4" className={classes.title}>
+            Weather
+          </Typography>
           <Grid container direction="row" spacing={1} alignItems="baseline">
-            <Grid item xs={12} sm={11}>
-              <Typography variant="h4">Weather</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={1}>
+            <Grid item xs={1} sm={1}>
               <Button aria-describedby={id} onClick={handleClick}>
                 <Avatar>
                   {getFirstLetter(user.name)}
@@ -95,13 +106,11 @@ const Navigation = ({ isLogin, user }) => {
                   <MenuItem onClick={handleClickOnMyProfile}><Link style = {{textDecoration: 'none', color: 'black'}}  to = '/TemperatureChart'>My account</Link></MenuItem>
                   <MenuItem onClick={handleOnClickLogout}>Logout</MenuItem>
                 </MenuList>
-                {/* <h1>ASG</h1> */}
               </Popover>
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-    </Container>
   );
 };
 

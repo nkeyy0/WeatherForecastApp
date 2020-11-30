@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import 'chartjs-plugin-colorschemes';
+import "chartjs-plugin-colorschemes";
 import "date-fns";
 import {
   Button,
@@ -41,7 +41,6 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { formatWithCursor } from "prettier";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -52,18 +51,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
-  // const chartRef = React.useRef();
   const classes = useStyles();
   const dispatch = useDispatch();
   console.log(cities);
-  const colors = generateRandomColorForChart(cities);
-  console.log(colors);
+
   const [chartTitle, changeChartTitle] = useState("Temperature changes");
   const [weatherIndicator, changeWeatherIndicator] = useState("temperature");
-  const [colorsForChart, changeColorsForChart] = useState(colors);
   const [chartData, setChartData] = useState({});
   const [citiesToFiler, setCitiesToFilter] = useState([]);
-  const [cityName, setCityName] = React.useState([]);
+  const [cityName, setCityName] = useState([]);
   const [selectedDateMin, setSelectedDateMin] = useState(
     getDateForPicker(cities).min
   );
@@ -74,6 +70,7 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
   const handleMinDateChange = (date) => {
     setSelectedDateMin(date);
   };
+
   const handleMaxDateChange = (date) => {
     setSelectedDateMax(date);
   };
@@ -259,6 +256,9 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     setCitiesToFilter(citiesForSelect);
     console.log(data);
   }, [labelsToChart]);
+  // useEffect(() => {
+  //   console.log('Did mount');
+  // }, []);
   // if(loading){
   //   return (
   //     <Grid container justify="center">
@@ -313,7 +313,7 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
           plugins: {
             colorschemes: {
               scheme: "brewer.Paired12",
-              fillAlpha: 0.7
+              fillAlpha: 0.7,
             },
           },
         }}

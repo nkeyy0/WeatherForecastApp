@@ -216,16 +216,16 @@ export const getCityArray = (arr) => {
 
 const filterByDate = (
   arr,
-  min = new Date('11 - 10 - 2020'),
-  max = new Date('11 - 10 - 2021')
+  min = new Date("11 - 10 - 2020"),
+  max = new Date("11 - 10 - 2021")
 ) => {
-  console.log('min:', new Date(min), 'max:' ,new Date(max))
+  console.log("min:", new Date(min), "max:", new Date(max));
   const dateArray = arr.reduce((acc, value) => {
     acc.push(
       value.reduce((res, date) => {
         if (
-          new Date(date.timeRequest).getTime() >= new Date(min).getTime()  &&
-          new Date(date.timeRequest).getTime() <= new Date(max).getTime() + DAY 
+          new Date(date.timeRequest).getTime() >= new Date(min).getTime() &&
+          new Date(date.timeRequest).getTime() <= new Date(max).getTime() + DAY
         ) {
           res.push(date);
         }
@@ -272,13 +272,13 @@ export const resultFilter = (arr, searchTerms, min, max, indicator) => {
   }
   console.log("FILTER:", filter);
   const tempData = filter.map((value) => {
-    console.log('tempValue:', value)
+    console.log("tempValue:", value);
     return value.map((temp) => {
-      console.log('temp', temp);
+      console.log("temp", temp);
       return { x: new Date(temp.timeRequest), y: temp.temperature };
     });
   });
-  console.log('tempData:', tempData);
+  console.log("tempData:", tempData);
   console.log(tempData);
   const cityDataToChart = filter.map((value) => {
     return value.map((temp) => {
@@ -354,5 +354,4 @@ export const resultFilter = (arr, searchTerms, min, max, indicator) => {
     data: resultData,
   };
 };
-
 
