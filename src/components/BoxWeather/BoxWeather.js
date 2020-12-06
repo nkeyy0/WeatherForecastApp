@@ -1,12 +1,16 @@
 import React from "react";
-import { firstLetterToUpperCase } from "../../convert/index";
-import { convertWindSpeed } from "../../convert/index";
+import {
+  convertToFahrenheit,
+  firstLetterToUpperCase,
+} from "../../helpers/index";
+import { convertWindSpeed } from "../../helpers/index";
 import Box from "@material-ui/core/Box";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Typography, Grid, Container } from "@material-ui/core";
-import { getSunrise } from "../../convert/index";
-import { getSunset } from "../../convert/index";
-
+import { getSunrise } from "../../helpers/index";
+import { getSunset } from "../../helpers/index";
+import { CELSIUS } from "../../constants/constants";
+import { te } from "date-fns/locale";
 
 const BoxWeather = ({
   descriptionWeather,
@@ -20,6 +24,7 @@ const BoxWeather = ({
   sunrise,
   sunset,
   weatherImage,
+  tempUnits,
 }) => {
   return (
     <Box align="center">
@@ -35,11 +40,16 @@ const BoxWeather = ({
               <img src={`${weatherImage}`} />
             </Grid>
             <Grid item>
-              {temperature && (
-                <Typography variant="h4" display="inline">
-                  {temperature} &#8451;
-                </Typography>
-              )}
+              {(temperature !== null || temperature !== undefined) &&
+                (tempUnits === CELSIUS ? (
+                  <Typography variant="h4" display="inline">
+                    {Math.round(temperature)} &#8451;
+                  </Typography>
+                ) : (
+                  <Typography variant="h4" display="inline">
+                    {Math.round(convertToFahrenheit(temperature))} &#8457;
+                  </Typography>
+                ))}
             </Grid>
           </Grid>
         </Container>

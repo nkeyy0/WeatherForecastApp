@@ -4,6 +4,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 
 import {
+  changeTempUnits,
   errorDownload,
   loadDataFromApis,
   loadDataFromOpenWeatherMap,
@@ -11,31 +12,41 @@ import {
   searchCity,
   selectApi,
 } from "../../actions/index";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { Grid } from "@material-ui/core";
+import {
+  Grid,
+  FormControl,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
+} from "@material-ui/core";
+import Radio from "@material-ui/core/Radio";
 import { useEffect } from "react";
 
 const CitySearchField = ({ api, cityName, email }) => {
-  const isValid = (str) => {
-    return !/[~`!#$%\^&*+=\\[\]\\';,./{}|\\":<>0-9\?]/g.test(str);
-  };
   const dispatch = useDispatch();
   const [cityInput, cityChangeInput] = useState({
     text: "",
     error: false,
     helperText: null,
   });
+
   const [selectAPI, changeSelectAPI] = useState({
     text: "",
     error: false,
     helperText: null,
   });
+  const [temperatureUnit, setTemperatureUnit] = useState("celsius");
   useEffect(() => {
     cityChangeInput({ text: cityName, error: false });
     changeSelectAPI(api);
   }, [cityName, api]);
+
+  const handleTemperatureUnitChange = (event) => {
+    setTemperatureUnit(event.target.value);
+    dispatch(changeTempUnits(event.target.value));
+  };
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -107,6 +118,27 @@ const CitySearchField = ({ api, cityName, email }) => {
             Search
           </Button>
         </Grid>
+        <FormControl component="fieldset">
+          <RadioGroup
+            row
+            aria-label="temp"
+            name="temp1"
+            defaultValue="celsius"
+            value={temperatureUnit}
+            onChange={handleTemperatureUnitChange}
+          >
+            <FormControlLabel
+              value="celsius"
+              control={<Radio />}
+              label="Celsius"
+            />
+            <FormControlLabel
+              value="fahrenheit"
+              control={<Radio />}
+              label="Fahrenheit"
+            />
+          </RadioGroup>
+        </FormControl>
       </Grid>
     </form>
   );

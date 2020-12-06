@@ -3,8 +3,9 @@ import {
   SET_DATA_FROM_WEATHER_STACK_SUCCESS,
   SELECT_API,
   SEARCH_CITY,
+  CHANGE_TEMP_UNITS,
 } from "../constants/constants";
-import { convertToKilometers } from "../convert/index";
+import { convertToKilometers } from "../helpers/index";
 
 const initialState = {
   cityName: null,
@@ -19,6 +20,7 @@ const initialState = {
   sunrise: null,
   sunset: null,
   weatherImage: null,
+  tempUnits: "celsius",
 };
 
 const weatherInfo = (state = initialState, action) => {
@@ -64,6 +66,9 @@ const weatherInfo = (state = initialState, action) => {
       };
     case SELECT_API:
       return { ...state, api: action.payload };
+    case CHANGE_TEMP_UNITS: {
+      return { ...state, tempUnits: action.payload };
+    }
     default:
       return state;
   }

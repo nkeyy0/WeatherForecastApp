@@ -16,6 +16,8 @@ import {
   Switch
 } from "react-router-dom";
 import NotFound from "./NotFound";
+import Copyright from "./Copyright";
+import MainPage from "./MainPage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,9 +43,10 @@ const App = () => {
             /> : <Route
             exact
             path="/"
-            component={Login}
+            component={MainPage}
           />}
             <Route exact path="/registration" component={Registration} />
+            <Route exact path = '/login' component = {Login}/>
             {isLogin ? <Route
               exact
               path="/TemperatureChart"
@@ -55,8 +58,11 @@ const App = () => {
           />}
             <Route component = {NotFound}></Route>
             </Switch>
+            <Copyright/>
           </CardContent>
+          
         </Card>
+        
       </Container>
     </Router>
   );

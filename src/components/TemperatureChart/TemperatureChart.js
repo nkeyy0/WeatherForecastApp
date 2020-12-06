@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   loadCitiesWeatherFromDB,
+  setDataAndLabelsToChart,
   setDataToChart,
   setLabelsToChart,
 } from "../../actions";
@@ -21,16 +22,11 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import {
-  convertTemperatureToChart,
-  generateRandomColor,
   setDataToChartHelper,
-  generateRandomColorForChart,
   getCityArray,
-  filterByCity,
   getDateForPicker,
-  filterByDate,
   resultFilter,
-} from "../../convert/index";
+} from "../../helpers/index";
 import { Line } from "react-chartjs-2";
 import {
   Select,
@@ -50,16 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
+const TemperatureChart = ({ cities, email, loading, chartData }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  console.log(cities);
 
   const [chartTitle, changeChartTitle] = useState("Temperature changes");
   const [weatherIndicator, changeWeatherIndicator] = useState("temperature");
-  const [chartData, setChartData] = useState({});
   const [citiesToFiler, setCitiesToFilter] = useState([]);
   const [cityName, setCityName] = useState([]);
+  const [chartDataComponent, setChartDataComponent] = useState({});
   const [selectedDateMin, setSelectedDateMin] = useState(
     getDateForPicker(cities).min
   );
@@ -90,28 +85,18 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         selectedDateMax,
         "wind speed"
       );
-      dispatch(setLabelsToChart(...res.time));
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     } else {
       const res = setDataToChartHelper(cities, "wind speed");
-      dispatch(setLabelsToChart(res.time));
-      console.log(res.data, "res");
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     }
   };
 
   const handleOnHumidityClick = (event) => {
     changeChartTitle("Humidity changes");
     changeWeatherIndicator("humidity");
-    console.log("city name:", cityName);
     if (cityName.length) {
       const res = resultFilter(
         cities,
@@ -120,20 +105,12 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         selectedDateMax,
         "humidity"
       );
-      dispatch(setLabelsToChart(...res.time));
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     } else {
       const res = setDataToChartHelper(cities, "humidity");
-      dispatch(setLabelsToChart(res.time));
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     }
   };
 
@@ -148,21 +125,12 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         selectedDateMax,
         "pressure"
       );
-      dispatch(setLabelsToChart(...res.time));
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     } else {
       const res = setDataToChartHelper(cities, "pressure");
-      dispatch(setLabelsToChart(res.time));
-
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     }
   };
 
@@ -177,21 +145,12 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         selectedDateMax,
         "temperature"
       );
-      dispatch(setLabelsToChart(...res.time));
-      dispatch(setDataToChart(res.data));
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     } else {
       const res = setDataToChartHelper(cities, "temperature");
-      dispatch(setLabelsToChart(res.time));
-      dispatch(setDataToChart(res.data));
-
-      setChartData({
-        labels: labelsToChart,
-        datasets: [...data],
-      });
+      dispatch(setDataAndLabelsToChart(res));
+      setChartDataComponent(chartData);
     }
   };
 
@@ -204,14 +163,8 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
       selectedDateMax,
       weatherIndicator
     );
-    dispatch(setLabelsToChart(...res.time));
-    dispatch(setDataToChart(res.data));
-    console.log("FILTER::::::::::::", data);
-
-    setChartData({
-      labels: labelsToChart,
-      datasets: [...data],
-    });
+    dispatch(setDataAndLabelsToChart(res));
+    setChartDataComponent(chartData);
   };
 
   const handleOnResetFilters = (event) => {
@@ -221,41 +174,25 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
     dispatch(setLabelsToChart(res.time));
     dispatch(setDataToChart(res.data));
 
-    setChartData({
-      labels: labelsToChart,
-      datasets: [...data],
-    });
+    dispatch(setDataAndLabelsToChart(res));
     setSelectedDateMin(getDateForPicker(cities).min);
     setSelectedDateMax(getDateForPicker(cities).max);
   };
 
-  const setData = (cities) => {
-    if (!cities.length) {
+  useEffect(() => {
+    if(!cities.length){
       dispatch(loadCitiesWeatherFromDB(email));
     }
-    const res = setDataToChartHelper(cities, weatherIndicator);
-    if (!labelsToChart.length) {
-      dispatch(setLabelsToChart(res.time));
-    }
-    dispatch(setDataToChart(res.data));
-    console.log(data);
-    setChartData({
-      labels: labelsToChart,
-      datasets: [...data],
-    });
-    return res;
-  };
-
+    console.log('Chart data update');
+  }, [chartData]);
   useEffect(() => {
-    const resultData = setData(cities);
-    setChartData({
-      labels: labelsToChart,
-      datasets: [...data],
-    });
     const citiesForSelect = getCityArray(cities);
     setCitiesToFilter(citiesForSelect);
-    console.log(data);
-  }, [labelsToChart]);
+    const res = setDataToChartHelper(cities, weatherIndicator);
+    dispatch(setDataAndLabelsToChart(res));
+    setChartDataComponent(chartData);
+    console.log('Set cities');
+  }, []);
   // useEffect(() => {
   //   console.log('Did mount');
   // }, []);
@@ -286,7 +223,7 @@ const TemperatureChart = ({ cities, email, loading, data, labelsToChart }) => {
         </Grid>
       </Container>
       <Line
-        data={chartData}
+        data={chartDataComponent}
         options={{
           title: {
             display: true,

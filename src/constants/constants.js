@@ -37,3 +37,7 @@ export const SET_DATA_TO_CHART = "SET_DATA_TO_CHART";
 export const SET_LABELS_TO_CHART = "SET_LABELS_TO_CHART";
 export const DAY = 1000 * 60 * 60 * 24;
 export const THREE_HOURS = 60 * 60 * 3;
+export const SET_DATA_AND_LABELS_TO_CHART = "SET_DATA_AND_LABELS_TO_CHART";
+export const CHANGE_TEMP_UNITS = "CHANGE_TEMP_UNITS";
+export const CELSIUS = 'celsius';
+export const FAHRENHEIT = 'fahrenheit';

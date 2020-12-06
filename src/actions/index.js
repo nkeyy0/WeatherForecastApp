@@ -26,11 +26,12 @@ import {
   LOAD_CITIES_FROM_DB,
   SET_DATA_TO_CHART,
   SET_CITIES_TO_CHARTS,
-  SET_LABELS_TO_CHART
+  SET_LABELS_TO_CHART,
+  SET_DATA_AND_LABELS_TO_CHART,
+  CHANGE_TEMP_UNITS
 } from "../constants/constants";
 
 export const searchCity = (city) => {
-  console.log("Search...");
   return {
     type: SEARCH_CITY,
     payload: city,
@@ -59,7 +60,7 @@ export const selectOnChange = (APIChanged) => {
 };
 
 export const setDataFromOpenWeatherMapSuccess = (dataFromAPI) => {
-  console.log(dataFromAPI);
+
   return {
     type: SET_DATA_FROM_OPEN_WEATHER_MAP_SUCCESS,
     payload: dataFromAPI,
@@ -67,7 +68,7 @@ export const setDataFromOpenWeatherMapSuccess = (dataFromAPI) => {
 };
 
 export const setDataFromWeatherStackSuccess = (dataFromAPI) => {
-  console.log(dataFromAPI);
+
   return {
     type: SET_DATA_FROM_WEATHER_STACK_SUCCESS,
     payload: dataFromAPI,
@@ -209,5 +210,19 @@ export const setLabelsToChart = (labels) => {
   return {
     type: SET_LABELS_TO_CHART,
     payload: labels
+  }
+}
+
+export const setDataAndLabelsToChart = (data) => {
+  return {
+    type: SET_DATA_AND_LABELS_TO_CHART,
+    payload: data
+  }
+}
+
+export const changeTempUnits = (unit) => {
+  return {
+    type: CHANGE_TEMP_UNITS,
+    payload: unit
   }
 }

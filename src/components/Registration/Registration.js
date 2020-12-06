@@ -18,8 +18,8 @@ import {
   newUserRegistrationFailed,
   newUserRegistrationSuccess,
 } from "../../actions";
-import { ErrorsCheck } from "../../convert/index";
-import { ErrorDescription } from "../../convert/index";
+import { ErrorsCheck } from "../../helpers/index";
+import { ErrorDescription } from "../../helpers/index";
 
 function Copyright() {
   return (
@@ -746,7 +746,7 @@ export default function Registration({
           <Grid container justify="flex-end">
             <Grid item>
               <LinkMaterial href="#" variant="body2">
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <Link to="/login" style={{ textDecoration: "none" }}>
                   Already have an account? Sign in
                 </Link>
               </LinkMaterial>
@@ -754,9 +754,6 @@ export default function Registration({
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

@@ -1,4 +1,8 @@
-import { SET_DATA_TO_CHART, SET_LABELS_TO_CHART } from "../constants/constants";
+import {
+  SET_DATA_TO_CHART,
+  SET_LABELS_TO_CHART,
+  SET_DATA_AND_LABELS_TO_CHART,
+} from "../constants/constants";
 
 const initialState = {
   data: [],
@@ -7,16 +11,14 @@ const initialState = {
 
 const weatherChart = (state = initialState, action) => {
   switch (action.type) {
-    case SET_DATA_TO_CHART:
+    case SET_DATA_AND_LABELS_TO_CHART:
       return {
         ...state,
-        data: action.payload,
+        chartData: {
+          labels: [...action.payload.labels],
+          datasets: [...action.payload.data],
+        },
       };
-    case SET_LABELS_TO_CHART: 
-    return {
-      ...state,
-      labels: action.payload
-    }
     default:
       return state;
   }

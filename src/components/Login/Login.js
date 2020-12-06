@@ -120,19 +120,6 @@ import { Link, BrowserRouter as Router, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserEmail, UserLogin } from "../../actions";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <LinkMaterial color="inherit" href="https://material-ui.com/">
-        Weather App
-      </LinkMaterial>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -245,9 +232,6 @@ export default function Login({ errorLogin, isLogin, loading }) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

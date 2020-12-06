@@ -18,21 +18,10 @@ import {
   newUserRegistrationFailed,
   newUserRegistrationSuccess,
 } from "../../actions";
-import { ErrorsCheck } from "../../convert/index";
-import { ErrorDescription } from "../../convert/index";
+import { ErrorsCheck } from "../../helpers/index";
+import { ErrorDescription } from "../../helpers/index";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <LinkMaterial color="inherit" href="https://material-ui.com/">
-        Weather App
-      </LinkMaterial>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 const NotFound = () => {
   return (
     <Container component="main" maxWidth="xs">
@@ -40,9 +29,6 @@ const NotFound = () => {
      <Typography variant = 'h4' align = 'center'>Ooops!!!</Typography>
      <Typography variant = 'h6' align = 'center'>That page doesn't exist or unavailable</Typography>
      <Typography variant = 'h6' align = 'center'><Link to = '/' style = {{textDecoration: 'none'}}>Back to home</Link></Typography>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };

@@ -12,6 +12,9 @@ export const getSunrise = (sunrise) => {
     date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
   }`;
 };
+
+export const convertToFahrenheit = (t) => (t * 9/5) + 32;
+
 export const getSunset = (sunset) => {
   const date = new Date(sunset * 1000);
   return `${date.getHours()}:${
@@ -136,7 +139,7 @@ export const setDataToChartHelper = (arr, indicator) => {
     }
   }
   return {
-    time: timeData,
+    labels: [...timeData],
     data: resultData,
   };
 };
@@ -350,7 +353,7 @@ export const resultFilter = (arr, searchTerms, min, max, indicator) => {
     }
   }
   return {
-    time: [...timeData],
+    labels: [...timeData],
     data: resultData,
   };
 };

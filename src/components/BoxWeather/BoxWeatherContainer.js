@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { default as BoxWeather } from "./BoxWeather";
 
-
 const mapStateToProps = (state) => ({
   descriptionWeather: state.weatherInfo.descriptionWeather,
   cityName: state.weatherInfo.cityName,
@@ -14,6 +13,7 @@ const mapStateToProps = (state) => ({
   sunrise: state.weatherInfo.sunrise,
   sunset: state.weatherInfo.sunset,
   weatherImage: state.weatherInfo.weatherImage,
+  tempUnits: state.weatherInfo.tempUnits,
 });
 
 export default connect(mapStateToProps)(BoxWeather);

@@ -6,8 +6,8 @@ const mapStateToProps = (state) => ({
   cities: state.citiesWeather.cities,
   email: state.auth.email,
   loading: state.download.loading,
-  data: state.weatherChart.data,
-  labelsToChart : state.weatherChart.labels
+  chartData: state.weatherChart.chartData
+
 });
 
 export default connect(mapStateToProps)(TemperatureChart);
